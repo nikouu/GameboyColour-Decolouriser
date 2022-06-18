@@ -98,7 +98,7 @@ While this does have some guesswork, it has proven good enough for my purposes s
 
 And that's how we get the final image from Gameboy Color to Gameboy:
 
-![image](etc/mokkiarea-eachpasswithoriginal.gif)
+![image](etc/mokkiarea-eachpass.gif)
 
 ### Brightness
 It turns out, brightness isn't as easy as I thought. This project uses `System.Drawing.Color` which has a [`.GetBrightness()`](https://docs.microsoft.com/en-us/dotnet/api/system.drawing.color.getbrightness?view=net-6.0) method, except this ordered some colours in a way I didn't expect. For instance the colour on the left is considered brighter than the colour on the right.
