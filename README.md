@@ -3,13 +3,16 @@
 
 ![image](etc/mokkiarea-eachpass.gif)
 
+It does this by passing over the image multiple times, making colour adjustments each time.
+
 ## Why tho?
 
 In short: I wanted a crisp image when importing into [GB Studio](https://www.gbstudio.dev/).
 
-I wanted to have a set of tiles/sprites in the style of Pokémon Generation 2 on the Gameboy Color and ended up drawing a whole bunch of tiles in my repo [Pokemon Gen 2 Style Tilemap](https://github.com/nikouu/Pokemon-gen-2-style-tilemap). These were so I could both draw my own environments and have a play with GB Studio which a few months prior to creating my own tiles came out with palettes for coloured games - rather than just the 4 default Gameboy greens. 
 
-Except... When importing my backgrounds into GB Studio I found they were automatically transformed into 4 colours and I had to "paint" coloured 4 colour palettes onto the tiles myself in the program. Which would be fine except GB Studio does not properly import coloured images. For example:
+I wanted to have a set of tiles/sprites in the style of Pokémon Generation 2 (you can check them out in [Pokemon Gen 2 Style Tilemap](https://github.com/nikouu/Pokemon-gen-2-style-tilemap)), so I could play with GB Studio.
+
+Except... When importing my backgrounds into GB Studio I found they were automatically transformed into four Gameboy green colours and I had to "paint" coloured 4 colour palettes onto the tiles myself in the program. Which would be fine except GB Studio does not properly import coloured images. It's obvious with an example where we'll compare the original colour image, the GB Studio version, and the version from this project, Gameboy Colouriser:
 
 | Created From       | Resulting Image                          |
 | ------------------ | ---------------------------------------- |
@@ -120,3 +123,4 @@ To get around this I looked for a custom implementation and that's when I realis
 - Originally this was in the [Pokemon Gen 2 Style Tilemap](https://github.com/nikouu/Pokemon-gen-2-style-tilemap) and when it grew too big, it came to live here.
 - The code is roughly equivalent to mad ravings.
 - The working with four colour tiles, then each colour subset tile came to me in a dream.
+- It was really fun working within the constraints, especially "there are always only a maximum of four colours". Make reducing the problem space super interesting.
