@@ -126,3 +126,4 @@ To get around this I looked for a custom implementation and that's when I realis
 - The code is roughly equivalent to mad ravings.
 - The working with four colour tiles, then each colour subset tile came to me in a dream.
 - It was really fun working within the constraints, especially "there are always only a maximum of four colours". Make reducing the problem space super interesting.
+- With the example image I was using, the first iteration of this project took 90s to colourise it. Fast forward and it takes sub 4 seconds.
