@@ -1,6 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Drawing;
 
+// https://docs.microsoft.com/en-us/dotnet/standard/commandline/
+// and spectre.console
 Console.WriteLine("Hello, World!");
 
 var threeColourTile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
