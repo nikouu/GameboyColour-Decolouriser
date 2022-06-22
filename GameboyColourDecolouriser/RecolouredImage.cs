@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace GbColouriser
+namespace GameboyColourDecolouriser
 {
     public class RecolouredImage
     {

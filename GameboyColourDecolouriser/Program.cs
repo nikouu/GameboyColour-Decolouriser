@@ -14,7 +14,7 @@ threeColourTile = @"C:\Users\Niko Uusitalo\Documents\GitHub\Gameboy-Colouriser\e
 var image = new Bitmap(threeColourTile);
 
 
-var imageData = new GbColouriser.Image(image.Width, image.Height);
+var imageData = new GameboyColourDecolouriser.Image(image.Width, image.Height);
 
 imageData.LoadImage(image);
 
