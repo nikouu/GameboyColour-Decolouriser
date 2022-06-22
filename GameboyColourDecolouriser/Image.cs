@@ -2,7 +2,7 @@
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace GbColouriser
+namespace GameboyColourDecolouriser
 {
     public class Image
     {

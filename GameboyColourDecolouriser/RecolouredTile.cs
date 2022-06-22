@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Text;
 
-namespace GbColouriser
+namespace GameboyColourDecolouriser
 {
     public class RecolouredTile : ITile
     {

@@ -1,5 +1,5 @@
-# Gameboy Colouriser
-✨Colourises a Gameboy Color image into a GameBoy image✨ via looking at each tile and mapping the colour values to one of the 4 on a Gameboy. You could almost say it "**decolourises**" images.
+# Gameboy Colour Decolouriser
+✨Decolourises a Gameboy Color image into a GameBoy image✨ via looking at each tile and mapping the colour values to one of the 4 on a Gameboy.
 
 ![image](etc/gbctogb.jpeg)
 
@@ -14,17 +14,17 @@ In short: I wanted a crisp image when importing into [GB Studio](https://www.gbs
 
 I wanted to have a set of tiles/sprites in the style of Pokémon Generation 2 (you can check them out in [Pokemon Gen 2 Style Tilemap](https://github.com/nikouu/Pokemon-gen-2-style-tilemap)), so I could play with GB Studio.
 
-Except... When importing my backgrounds into GB Studio I found they were automatically transformed into four Gameboy green colours and I had to "paint" coloured 4 colour palettes onto the tiles myself in the program. Which would be fine except GB Studio does not properly import coloured images. It's obvious with an example where we'll compare the original colour image, the GB Studio version, and the version from this project, Gameboy Colouriser:
+Except... When importing my backgrounds into GB Studio I found they were automatically transformed into four Gameboy green colours and I had to "paint" coloured 4 colour palettes onto the tiles myself in the program. Which would be fine except GB Studio does not properly import coloured images. It's obvious with an example where we'll compare the original colour image, the GB Studio version, and the version from this project, GameboyColour Decolouriser:
 
 | Created From       | Resulting Image                          |
 | ------------------ | ---------------------------------------- |
 | Original Colour    | ![image](etc/mokkiarea-truecolour.png)   |
 | GB Studio          | ![image](etc/mokkiarea-gbstudio.png)     |
-| Gameboy Colouriser | ![image](etc/mokkiarea-gbcolouriser.png) |
+| GameboyColour Decolouriser | ![image](etc/mokkiarea-gbcolouriser.png) |
 
 Ignoring that the actual 4 colour palettes are slightly different (i.e. different shades of green) it still stands that the GB Studio version does not keep the original image fidelity. There is some sort of approximation of colour across the *entire* image and not per tile. This is easy to see if we zoom right into some of the detail:
 
-| Detail     | Original                                    | GB Studio                                 | Gameboy Colouriser                            |
+| Detail     | Original                                    | GB Studio                                 | GameboyColour Decolouriser                            |
 | ---------- | ------------------------------------------- | ----------------------------------------- | --------------------------------------------- |
 | Building   | ![image](etc/mokkibuilding-truecolour.png)  | ![image](etc/mokkibuilding-gbstudio.png)  | ![image](etc/mokkibuilding-gbcolouriser.png)  |
 | Grass      | ![image](etc/mokkigrass-truecolour.png)     | ![image](etc/mokkigrass-gbstudio.png)     | ![image](etc/mokkigrass-gbcolouriser.png)     |
@@ -50,10 +50,10 @@ It sounds easy at first beacuse you just obviously map the brightest true colour
 - There are different ways to measure brightness which can lead to odd result
 - A darker blue on a specific tile might be the darkest for that tile, but it could be the second darkest for another tile. What Gameboy shade applies to this dark blue?
 
-Considering each tile individually and using the constraints of having 4 colours per tile is how the Gameboy Colouriser works. It does not take in a whole image to approximate and flatten the colours, like in GB Studio.
+Considering each tile individually and using the constraints of having 4 colours per tile is how the GameboyColour Decolouriser works. It does not take in a whole image to approximate and flatten the colours, like in GB Studio.
 
 ### How does it work?
-While the program has been through a few iterations, it works by doing several passes over each tile of the image and forming reasoning around what true colour maps to what Gameboy colour (*read: a lot of `Dictionary<K, V>` objects are involved*). These passes are the core workings of the Gameboy Colouriser and they are:
+While the program has been through a few iterations, it works by doing several passes over each tile of the image and forming reasoning around what true colour maps to what Gameboy colour (*read: a lot of `Dictionary<K, V>` objects are involved*). These passes are the core workings of the GameboyColour Decolouriser and they are:
 
 #### 1. Recolour Based on Four Colour Tiles
 This is the easiest step. Four colour tiles leave no guesswork on how each true colour maps to a Gameboy colour. Just order both true colours and Gameboy colours by brightness and marry them together. 
@@ -68,7 +68,7 @@ As long as there is a decent amount of four colour tiles, a good chunk of the im
 The tiles that haven't been resolved contain colours that aren't in any of the four colour tiles. Taking some examples from the image, the gravelly road has a true colour shade of grey that isn't present anywhere else, even though the white part of the road is. Same with the windows, there is a bright yellow that only appears in the windows and in no four colour tiles.
 
 #### 2. Recolour Based on transparent tiles
-PNGs are great when working with pixel-based projects, and working with a Gameboy is no different. However while the programs we use might easily undertand transparent pixels, a Gameboy doesn't. Meaning we need to replace the transparent pixels. For this, Gameboy Colouriser will convert any transparent pixel into the darkest Gameboy shade. I've found that often my transparent pixels are the "void", or the bits outside of the playable area and since Pokémon does that (check it out next time you're inside a small building) this does the same.
+PNGs are great when working with pixel-based projects, and working with a Gameboy is no different. However while the programs we use might easily undertand transparent pixels, a Gameboy doesn't. Meaning we need to replace the transparent pixels. For this, GameboyColour Decolouriser will convert any transparent pixel into the darkest Gameboy shade. I've found that often my transparent pixels are the "void", or the bits outside of the playable area and since Pokémon does that (check it out next time you're inside a small building) this does the same.
 
 It might be a bit hard to see depending on your dark/light setting, but there is now dark tiles around the outside of the map. 
 
