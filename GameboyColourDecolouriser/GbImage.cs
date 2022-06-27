@@ -1,29 +1,34 @@
-﻿using System.Drawing;
+﻿using Spectre.Console;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using Color = System.Drawing.Color;
 
 namespace GameboyColourDecolouriser
 {
-    public class Image
+    public class GbImage
     {
-        private readonly int _width;
-        private readonly int _height;
+        private int _width;
+        private int _height;
 
-        private readonly Tile[,] _tiles;
-
-        public Image(int width, int height)
-        {
-            _width = width;
-            _height = height;
-            _tiles = new Tile[width / 8, height / 8];
-        }
+        private Tile[,] _tiles;
 
         public Tile[,] Tiles => _tiles;
         public int Width => _width;
         public int Height => _height;
 
-        public void LoadImage(Bitmap image)
+        public void LoadImage(string filePath, ProgressTask? progressTask = null)
         {
+            var image = new Bitmap(filePath);
+            LoadImage(image, progressTask);
+        }
+
+        public void LoadImage(Bitmap image, ProgressTask? progressTask = null)
+        {
+            _width = image.Width;
+            _height = image.Height;
+            _tiles = new Tile[_width / 8, _height / 8];
+
             // https://stackoverflow.com/a/9691388
             var rawImage = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, image.PixelFormat);
             var imageByteCount = rawImage.Stride * rawImage.Height;
@@ -46,38 +51,11 @@ namespace GameboyColourDecolouriser
 
                     _tiles[i / 8, j / 8] = new Tile(croppedBitmap, i / 8, j / 8);
                 }
+
+                progressTask?.Increment(((double)8 /image.Width)*100);
             }
 
             image.UnlockBits(rawImage);
-        }
-
-        public Bitmap Recolour()
-        {
-            var imageProcessor = new ImageColouriser(this);
-            var tiles = imageProcessor.Process();
-
-            var recolouredImage = new Bitmap(_width, _height);
-
-            for (int i = 0; i < _width; i++)
-            {
-                for (int j = 0; j < _height; j++)
-                {
-                    var tileArrayX = i / 8;
-                    var tileArrayY = j / 8;
-
-                    var tileX = i % 8;
-                    var tileY = j % 8;
-
-                    var tile = tiles[tileArrayX, tileArrayY];
-
-                    var colour = tile[tileX, tileY];
-
-
-                    recolouredImage.SetPixel(i, j, colour);
-                }
-            }
-
-            return recolouredImage;
         }
 
         public Color GetPixel(int x, int y)

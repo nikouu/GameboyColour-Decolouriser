@@ -6,4 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:GameboyColourDecolouriser.Tile.LoadTile(System.Drawing.Bitmap)~System.Threading.Tasks.Task")]
-[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:GameboyColourDecolouriser.Image.LoadImageAsync(System.Drawing.Bitmap)~System.Threading.Tasks.Task")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:GameboyColourDecolouriser.GbImage.LoadImageAsync(System.Drawing.Bitmap)~System.Threading.Tasks.Task")]
