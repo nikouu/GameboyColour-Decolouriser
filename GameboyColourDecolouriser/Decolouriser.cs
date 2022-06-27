@@ -1,22 +1,59 @@
-﻿using System.Drawing;
+﻿using Spectre.Console;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Color = System.Drawing.Color;
 
 namespace GameboyColourDecolouriser
 {
-    public class ImageColouriser
+    public class Decolouriser
     {
-        private readonly RecolouredImage _recolouredImage;
-
         private Color GBWhite => Color.FromArgb(224, 248, 207);
         private Color GBLight => Color.FromArgb(134, 192, 108);
         private Color GBDark => Color.FromArgb(48, 104, 80);
         private Color GBBlack => Color.FromArgb(7, 24, 33);
 
-        public ImageColouriser(Image image)
+        private RecolouredImage _recolouredImage;
+
+        private SpectreTasks? _spectreTasks;
+
+        public Bitmap Decolourise(GbImage image, SpectreTasks? spectreTasks = null)
         {
             _recolouredImage = new RecolouredImage(image);
+            _spectreTasks = spectreTasks;
+
+            var tiles = Process();
+
+            var recolouredImage = new Bitmap(image.Width, image.Height);
+
+            for (int i = 0; i < image.Width; i++)
+            {
+                for (int j = 0; j < image.Height; j++)
+                {
+                    var tileArrayX = i / 8;
+                    var tileArrayY = j / 8;
+
+                    var tileX = i % 8;
+                    var tileY = j % 8;
+
+                    var tile = tiles[tileArrayX, tileArrayY];
+
+                    var colour = tile[tileX, tileY];
+
+
+                    recolouredImage.SetPixel(i, j, colour);
+                }
+
+                _spectreTasks?.generatingFinalImage.Increment(((double)1 / image.Width) * 100);                
+            }
+
+            return recolouredImage;
         }
 
-        public ITile[,] Process()
+        private ITile[,] Process()
         {
             RecolourBasedOnFourColourTiles(_recolouredImage);
 
@@ -82,16 +119,19 @@ namespace GameboyColourDecolouriser
                             else
                             {
                                 // pixel is good to go already
+                                _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count) * 100);
                                 continue;
                             }
                         }
                     }
                     UpdateImageDictionaryCaches(_recolouredImage, unfinishedTile);
                 }
+
+                _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count) * 100);
             }
         }
 
-        private static void RecolourBasedOnExistingTileColours(Dictionary<Color, Color> mostUsedGbColoursPerRealColourDictionary, List<RecolouredTile> unfinishedTiles)
+        private void RecolourBasedOnExistingTileColours(Dictionary<Color, Color> mostUsedGbColoursPerRealColourDictionary, List<RecolouredTile> unfinishedTiles)
         {
             foreach (var unfinishedTile in unfinishedTiles)
             {
@@ -104,6 +144,8 @@ namespace GameboyColourDecolouriser
                         unfinishedTile[i, j] = mostUsedGbColoursPerRealColourDictionary[currentOriginalColour];
                     }
                 }
+
+                _spectreTasks?.decolourStageThree.Increment(((double)1 / unfinishedTiles.Count) * 100);
             }
         }
 
@@ -123,6 +165,8 @@ namespace GameboyColourDecolouriser
                         }
                     }
                 }
+
+                _spectreTasks?.decolourStageTwo.Increment(((double)1 / unfinishedTiles.Count) * 100);
             }
         }
 
@@ -162,6 +206,8 @@ namespace GameboyColourDecolouriser
                         UpdateImageDictionaryCaches(recolouredImage, tile);
                     }
                 }
+                AnsiConsole.WriteLine("ayylmao");
+                _spectreTasks?.decolourStageOne.Increment(((double)1 / tileGroups.Count) * 100);
             }
         }
 
