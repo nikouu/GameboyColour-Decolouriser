@@ -2,7 +2,9 @@
 using GameboyColourDecolouriser;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using System.CommandLine;
 using System.Drawing;
+using Command = System.CommandLine.Command;
 
 // https://docs.microsoft.com/en-us/dotnet/standard/commandline/
 // and spectre.console
@@ -31,38 +33,77 @@ threeColourTile = @"C:\Users\Niko Uusitalo\Documents\GitHub\GameboyColour-Decolo
 // move to dependency injection, inject the progrss tasks, and everything else
 // open with commmand app typed to the program type
 
+var rootCommand = new RootCommand("this is the description of the root");
 
-AnsiConsole.WriteLine("ayylmao2");
+var decolouriseCommand = new Command("Decolourise", "Decolourises a Gameboy Color image into a Gameboy image.");
 
-AnsiConsole.Progress()
-    .Start(ctx =>
+//decolouriseCommand.SetHandler(() => Console.WriteLine("hello"));
+
+var inputFile = new Option<FileInfo>(
+    name: "--input",
+    description: "The input image file to be decolourised.");
+
+var outputFile = new Option<FileInfo>(
+    name: "--output",
+    description: "The output image file to save the decolourised as.");
+
+decolouriseCommand.AddOption(inputFile);
+decolouriseCommand.AddOption(outputFile);
+rootCommand.AddCommand(decolouriseCommand);
+
+decolouriseCommand.SetHandler((input, output) =>
+{
+    if (input is null || output is null)
     {
-        // Define tasks
-        var loadingImage = ctx.AddTask("[green]Loading Image[/]");
-        var decolourStageOne = ctx.AddTask("[green]Decolouring Stage One[/]");
-        var decolourStageTwo = ctx.AddTask("[green]Decolouring Stage Two[/]");
-        var decolourStageThree = ctx.AddTask("[green]Decolouring Stage Three)[/]");
-        var decolourStageFour = ctx.AddTask("[green]Decolouring Stage Four[/]");
-        var generatingFinalImage = ctx.AddTask("[green]Generating Final Image[/]");
+        Console.WriteLine("one of them is null");
+    }
+    else
+    {
+        Console.WriteLine($"Input file {input.Name}7, output file {output.Name}");
 
-        var spectreTasks = new SpectreTasks(decolourStageOne, decolourStageTwo, decolourStageThree, decolourStageFour, generatingFinalImage);
+        AnsiConsole.Progress()
+        .Start(ctx =>
+        {
 
-        var gbImage = new GbImage();
+            // Define tasks
+            var loadingImage = ctx.AddTask("[green]Loading Image[/]");
+            var decolourStageOne = ctx.AddTask("[green]Decolouring Stage One[/]");
+            var decolourStageTwo = ctx.AddTask("[green]Decolouring Stage Two[/]");
+            var decolourStageThree = ctx.AddTask("[green]Decolouring Stage Three)[/]");
+            var decolourStageFour = ctx.AddTask("[green]Decolouring Stage Four[/]");
+            var generatingFinalImage = ctx.AddTask("[green]Generating Final Image[/]");
 
-        gbImage.LoadImage(threeColourTile, loadingImage);
+            var spectreTasks = new SpectreTasks(decolourStageOne, decolourStageTwo, decolourStageThree, decolourStageFour, generatingFinalImage);
 
-        var decolouriser = new Decolouriser();
+            var gbImage = new GbImage();
 
-        var recolouredImage = decolouriser.Decolourise(gbImage, spectreTasks);
+            gbImage.LoadImage(input.FullName, loadingImage);
 
-        recolouredImage.Save(@"C:\Users\Niko Uusitalo\Documents\GitHub\Pokemon-gen-2-style-tilemap\ayylmao2.png");
-    });
+            var decolouriser = new Decolouriser();
+
+            var recolouredImage = decolouriser.Decolourise(gbImage, spectreTasks);
+
+            recolouredImage.Save(output.FullName);
+        });
+
+
+
+    }
+},
+inputFile, outputFile);
+
 
 AnsiConsole.WriteLine("ayylmao2");
+
+
+
+AnsiConsole.WriteLine("ayylmao2");
+
+rootCommand.Invoke(args);
 
 public record class SpectreTasks(
-    ProgressTask decolourStageOne, 
-    ProgressTask decolourStageTwo, 
+    ProgressTask decolourStageOne,
+    ProgressTask decolourStageTwo,
     ProgressTask decolourStageThree,
     ProgressTask decolourStageFour,
     ProgressTask generatingFinalImage);
