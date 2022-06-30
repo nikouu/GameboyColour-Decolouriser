@@ -1,10 +1,5 @@
 ﻿using Spectre.Console;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Color = System.Drawing.Color;
 
 namespace GameboyColourDecolouriser
@@ -47,7 +42,7 @@ namespace GameboyColourDecolouriser
                     recolouredImage.SetPixel(i, j, colour);
                 }
 
-                _spectreTasks?.generatingFinalImage.Increment(((double)1 / image.Width) * 100);                
+                _spectreTasks?.generatingFinalImage.Increment(((double)1 / image.Width) * 100);
             }
 
             return recolouredImage;

@@ -52,7 +52,7 @@ namespace GameboyColourDecolouriser
                     _tiles[i / 8, j / 8] = new Tile(croppedBitmap, i / 8, j / 8);
                 }
 
-                progressTask?.Increment(((double)8 /image.Width)*100);
+                progressTask?.Increment(((double)8 / image.Width) * 100);
             }
 
             image.UnlockBits(rawImage);
