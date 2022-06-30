@@ -13,7 +13,7 @@ namespace GameboyColourDecolouriser
 
         public Tile(Bitmap tile, int x, int y)
         {
-            
+
             _colourMap = new Color[8, 8];
             _colours = new HashSet<Color>();
             _hash = new Lazy<int>(() => GenerateHash()); // hm, this should be ensured to only be called after a load
