@@ -15,24 +15,24 @@ namespace GameboyColourDecolouriser
 
         private SpectreTasks? _spectreTasks;
 
-        public Bitmap Decolourise(GbImage gbImage, SpectreTasks? spectreTasks = null)
+        public Bitmap Decolourise(GbcImage gbcImage, SpectreTasks? spectreTasks = null)
         {
-            _recolouredImage = new RecolouredImage(gbImage);
+            _recolouredImage = new RecolouredImage(gbcImage);
             _spectreTasks = spectreTasks;
 
             var recolouredTiles = Process();
-            var recolouredImage = CreateRecolouredImage(gbImage, recolouredTiles);
+            var recolouredImage = CreateRecolouredImage(gbcImage, recolouredTiles);
 
             return recolouredImage;
         }
 
-        private Bitmap CreateRecolouredImage(GbImage image, ITile[,] tiles)
+        private Bitmap CreateRecolouredImage(GbcImage gbcImage, ITile[,] tiles)
         {
-            var recolouredImage = new Bitmap(image.Width, image.Height);
+            var recolouredImage = new Bitmap(gbcImage.Width, gbcImage.Height);
 
-            for (int i = 0; i < image.Width; i++)
+            for (int i = 0; i < gbcImage.Width; i++)
             {
-                for (int j = 0; j < image.Height; j++)
+                for (int j = 0; j < gbcImage.Height; j++)
                 {
                     var tileArrayX = i / 8;
                     var tileArrayY = j / 8;
@@ -46,7 +46,7 @@ namespace GameboyColourDecolouriser
                     recolouredImage.SetPixel(i, j, colour);
                 }
 
-                _spectreTasks?.generatingFinalImage.Increment(((double)1 / image.Width) * 100);
+                _spectreTasks?.generatingFinalImage.Increment(((double)1 / gbcImage.Width) * 100);
             }
 
             return recolouredImage;
@@ -255,7 +255,6 @@ namespace GameboyColourDecolouriser
 
         private void ProcessFourColours(RecolouredTile recolouredTile)
         {
-            //var recolouredTileColours = new Color[8, 8];
             var possibleGBColours = new List<Color> { GBWhite, GBLight, GBDark, GBBlack };
             var lightestToDarkestColours = recolouredTile.OriginalColours.OrderByDescending(x => x.GetPerceivedBrightness()).ToList();
 

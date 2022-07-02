@@ -44,8 +44,8 @@ namespace GameboyColourDecolouriser
 
         // Different from the original Color.IsEmpty() as that has extra checks for uninitialised data
         // meaning even if all argb values are set to 0, IsEmpty() may still return false.
-        public static bool IsBlank(this Color colour) 
+        public static bool IsBlank(this Color colour)
             => colour.A == 0 && colour.R == 0 && colour.G == 0 && colour.B == 0;
-        
+
     }
 }

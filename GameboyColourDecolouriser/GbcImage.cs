@@ -6,7 +6,7 @@ using Color = System.Drawing.Color;
 
 namespace GameboyColourDecolouriser
 {
-    public class GbImage
+    public class GbcImage
     {
         private int _width;
         private int _height;
