@@ -103,12 +103,12 @@ namespace GameboyColourDecolouriser
         {
             if (image.Height % 8 != 0)
             {
-                throw new ArgumentException($"Image height of {image.Height} is not divisible by 8.");
+                throw new ArgumentException($"Image height of {image.Height}px is not divisible by 8.");
             }
 
             if (image.Width % 8 != 0)
             {
-                throw new ArgumentException($"Image width of {image.Width} is not divisible by 8.");
+                throw new ArgumentException($"Image width of {image.Width}px is not divisible by 8.");
             }
         }
     }

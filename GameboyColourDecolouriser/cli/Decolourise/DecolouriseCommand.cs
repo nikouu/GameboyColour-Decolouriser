@@ -10,12 +10,22 @@ namespace GameboyColourDecolouriser.cli.Decolourise
             var inputFile = parseResult.GetValueForArgument(DecolouriseCommandParser.InputFileArgument);
             var outputFile = parseResult.GetValueForArgument(DecolouriseCommandParser.OutputFileArgument);
 
-            if (inputFile is null || outputFile is null)
+            if (inputFile is null)
             {
-                return 1;
+                throw new ArgumentException("No input file given.");
             }
 
-            Console.WriteLine($"Input file {inputFile.Name}7, output file {outputFile.Name}");
+            if (outputFile is null)
+            {
+                throw new ArgumentException("No ouput file given.");
+            }
+
+            if (!File.Exists(inputFile.FullName))
+            {
+                throw new FileNotFoundException($"Input file {inputFile.Name} does not exist.");                
+            }
+
+            Console.WriteLine($"Input file {inputFile.Name}, output file {outputFile.Name}");
 
             AnsiConsole.Progress()
             .Start(ctx =>
@@ -25,7 +35,7 @@ namespace GameboyColourDecolouriser.cli.Decolourise
                 var loadingImage = ctx.AddTask("[green]Loading Image[/]");
                 var decolourStageOne = ctx.AddTask("[green]Decolouring Stage One[/]");
                 var decolourStageTwo = ctx.AddTask("[green]Decolouring Stage Two[/]");
-                var decolourStageThree = ctx.AddTask("[green]Decolouring Stage Three)[/]");
+                var decolourStageThree = ctx.AddTask("[green]Decolouring Stage Three[/]");
                 var decolourStageFour = ctx.AddTask("[green]Decolouring Stage Four[/]");
                 var generatingFinalImage = ctx.AddTask("[green]Generating Final Image[/]");
 
@@ -38,6 +48,11 @@ namespace GameboyColourDecolouriser.cli.Decolourise
                 var decolouriser = new Decolouriser();
 
                 var recolouredImage = decolouriser.Decolourise(gbImage, spectreTasks);
+
+                if (!Directory.Exists(outputFile.DirectoryName))
+                {
+                    Directory.CreateDirectory(outputFile.DirectoryName);
+                }
 
                 recolouredImage.Save(outputFile.FullName);
             });
