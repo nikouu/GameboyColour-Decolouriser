@@ -20,8 +20,8 @@ namespace GameboyColourDecolouriser
             _recolouredImage = new RecolouredImage(gbImage);
             _spectreTasks = spectreTasks;
 
-            var tiles = Process();
-            var recolouredImage = CreateRecolouredImage(gbImage, tiles);
+            var recolouredTiles = Process();
+            var recolouredImage = CreateRecolouredImage(gbImage, recolouredTiles);
 
             return recolouredImage;
         }
@@ -71,6 +71,7 @@ namespace GameboyColourDecolouriser
 
             unfinishedTiles = unfinishedTiles.Where(x => !x.IsFullyRecoloured).ToList();
 
+            // dead code?
             var brightnessDictionary = mostUsedGbColoursPerRealColourDictionary.ToLookup(x => x.Key.GetPerceivedBrightness(), z => z);
             RecolourBasedOnNearestSimilarColours(unfinishedTiles);
 
@@ -92,7 +93,7 @@ namespace GameboyColourDecolouriser
                 }
                 else
                 {
-                    foreach (var ((i, j), colour) in unfinishedTile.ToIEmumerable())
+                    foreach (var ((i, j), colour) in unfinishedTile.ToIEnumerable())
                     {
                         var currentOriginalColour = unfinishedTile.OriginalTileColourMap[i, j];
 
@@ -130,7 +131,7 @@ namespace GameboyColourDecolouriser
         {
             foreach (var unfinishedTile in unfinishedTiles)
             {
-                foreach (var ((i, j), colour) in unfinishedTile.ToIEmumerable())
+                foreach (var ((i, j), colour) in unfinishedTile.ToIEnumerable())
                 {
                     var currentOriginalColour = unfinishedTile.OriginalTileColourMap[i, j];
 
@@ -157,7 +158,7 @@ namespace GameboyColourDecolouriser
 
                 if (singleColour.IsBlank())
                 {
-                    foreach (var ((i, j), colour) in unfinishedTile.ToIEmumerable())
+                    foreach (var ((i, j), colour) in unfinishedTile.ToIEnumerable())
                     {
                         unfinishedTile[i, j] = GBBlack;
                     }
@@ -208,6 +209,7 @@ namespace GameboyColourDecolouriser
             }
         }
 
+        // does this function actually do anything with all the variables bewfore the tryadds?
         private void UpdateImageDictionaryCaches(RecolouredImage recolouredImage, RecolouredTile tile)
         {
             var tileColourDictionaryKeys = tile.OriginalColours.OrderBy(x => x.GetPerceivedBrightness());
@@ -224,7 +226,7 @@ namespace GameboyColourDecolouriser
 
         private void ProcessFromExistingTileDictionary(RecolouredTile recolouredTile, Dictionary<Color, Color> dictionary)
         {
-            foreach (var ((i, j), colour) in recolouredTile.ToIEmumerable())
+            foreach (var ((i, j), colour) in recolouredTile.ToIEnumerable())
             {
                 var originalColour = recolouredTile.OriginalTileColourMap[i, j];
                 recolouredTile[i, j] = dictionary[originalColour];
@@ -240,7 +242,7 @@ namespace GameboyColourDecolouriser
                 if (tile.OriginalColourCount == tile.Colours.Count && tile.OriginalColours.ContainsAll(recolouredTile.OriginalColours))
                 {
                     // found an n+1 colour tile that has all the n colours of this
-                    foreach (var ((i, j), colour) in recolouredTile.ToIEmumerable())
+                    foreach (var ((i, j), colour) in recolouredTile.ToIEnumerable())
                     {
                         var originalColour = recolouredTile.OriginalTileColourMap[i, j];
                         recolouredTile[i, j] = tile.ColourDictionary(originalColour);
@@ -259,7 +261,7 @@ namespace GameboyColourDecolouriser
 
             var localColourMap = lightestToDarkestColours.Zip(possibleGBColours, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
 
-            foreach (var ((i, j), colour) in recolouredTile.ToIEmumerable())
+            foreach (var ((i, j), colour) in recolouredTile.ToIEnumerable())
             {
                 recolouredTile[i, j] = localColourMap[recolouredTile.OriginalTileColourMap[i, j]];
             }
