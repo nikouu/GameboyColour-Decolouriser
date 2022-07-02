@@ -151,6 +151,7 @@ namespace GameboyColourDecolouriser
             {
                 if (unfinishedTile.OriginalColourCount != 1)
                 {
+                    _spectreTasks?.decolourStageTwo.Increment(((double)1 / unfinishedTiles.Count) * 100);
                     continue;
                 }
 
