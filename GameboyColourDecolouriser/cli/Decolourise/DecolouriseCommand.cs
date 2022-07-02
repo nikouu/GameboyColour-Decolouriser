@@ -22,7 +22,7 @@ namespace GameboyColourDecolouriser.cli.Decolourise
 
             if (!File.Exists(inputFile.FullName))
             {
-                throw new FileNotFoundException($"Input file {inputFile.Name} does not exist.");                
+                throw new FileNotFoundException($"Input file {inputFile.Name} does not exist.");
             }
 
             Console.WriteLine($"Input file {inputFile.Name}, output file {outputFile.Name}");
