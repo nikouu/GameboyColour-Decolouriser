@@ -27,6 +27,10 @@ namespace GameboyColourDecolouriser
 
         public RecolouredTile[,] Tiles => _recolouredTiles;
 
+        public bool ContainsTile(int key) => TileDictionary.ContainsKey(key);
+
+        public bool ContainsColour(string colourHash) => TileColourDictionary.ContainsKey(colourHash);
+
         public ITile[,] OriginalTiles => _originalImage.Tiles;
 
         private void SetupTiles()

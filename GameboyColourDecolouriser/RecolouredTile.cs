@@ -56,6 +56,8 @@ namespace GameboyColourDecolouriser
 
         public Color[,] ColourMap => _gbColourMap;
 
+        public IEnumerable<((int x, int y) coordinates, Color item)> ToIEmumerable() => ColourMap.ToIEnumerableWithCoords();
+
         // can be made lazy/cached
         public HashSet<Color> OriginalColours => _originalTile.Colours;
 
