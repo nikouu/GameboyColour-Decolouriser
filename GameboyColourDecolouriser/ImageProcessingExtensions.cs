@@ -2,7 +2,7 @@
 
 namespace GameboyColourDecolouriser
 {
-    public static class Extensions
+    public static class ImageProcessingExtensions
     {
         //https://stackoverflow.com/a/13091986
         public static bool ContainsAll<T>(this IEnumerable<T> containingList, IEnumerable<T> lookupList)

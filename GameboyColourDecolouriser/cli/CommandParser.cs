@@ -3,13 +3,12 @@ using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Invocation;
 using System.CommandLine.Parsing;
-using System.Reflection;
 
 namespace GameboyColourDecolouriser.cli
 {
     internal static class CommandParser
     {
-        public static readonly RootCommand RootCommand = new RootCommand();
+        public static readonly RootCommand RootCommand = new();
 
         // Subcommands
         public static readonly Command[] Subcommands = new Command[]

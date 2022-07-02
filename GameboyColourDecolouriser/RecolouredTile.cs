@@ -7,9 +7,9 @@ namespace GameboyColourDecolouriser
     {
         private readonly Tile _originalTile;
         private readonly Color[,] _gbColourMap;
-        private readonly HashSet<Color> _gbColours;
+        private readonly HashSet<Color> _gbColours = new();
         // key is original colour
-        private readonly Dictionary<Color, Color> _colourDictionary;
+        private readonly Dictionary<Color, Color> _colourDictionary = new();
         private Lazy<int> _originalColourCount;
         private readonly Lazy<int> _originalTileHash;
         private Lazy<string> _colourKeyString;
@@ -30,14 +30,10 @@ namespace GameboyColourDecolouriser
         public RecolouredTile(Tile originalTile)
         {
             _originalTile = originalTile;
-            _gbColours = new HashSet<Color>();
             _gbColourMap = new Color[8, 8];
-            _colourDictionary = new Dictionary<Color, Color>();
 
             _originalColourCount = new Lazy<int>(() => OriginalColours.Count);
-
             _colourKeyString = new Lazy<string>(() => GenerateColourKeyString());
-
             _originalTileHash = new Lazy<int>(() => _originalTile.ColourHash);
         }
 

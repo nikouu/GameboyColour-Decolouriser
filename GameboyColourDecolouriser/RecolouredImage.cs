@@ -9,10 +9,10 @@ namespace GameboyColourDecolouriser
         private readonly RecolouredTile[,] _recolouredTiles;
 
         // Keys being the colours in the tile, ordered by brightness, and values being the gb colours, in the same order
-        public Dictionary<string, Dictionary<Color, Color>> TileColourDictionary;
+        public Dictionary<string, Dictionary<Color, Color>> TileColourDictionary = new();
 
         // Keys being the "hash" of the tile. Allows quick lookup for Colour dictionary for previously seen identical tiles
-        public Dictionary<int, string> TileDictionary;
+        public Dictionary<int, string> TileDictionary = new();
 
         public RecolouredTile[,] Tiles => _recolouredTiles;
 
@@ -26,9 +26,6 @@ namespace GameboyColourDecolouriser
         {
             _originalImage = originalImage;
             _recolouredTiles = new RecolouredTile[_originalImage.Width / 8, _originalImage.Height / 8];
-            TileColourDictionary = new Dictionary<string, Dictionary<Color, Color>>();
-            TileDictionary = new Dictionary<int, string>();
-
             SetupTiles();
         }
 
