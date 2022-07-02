@@ -4,7 +4,7 @@ namespace GameboyColourDecolouriser
 {
     public class RecolouredImage
     {
-        private readonly GbImage _originalImage;
+        private readonly GbcImage _originalImage;
 
         private readonly RecolouredTile[,] _recolouredTiles;
 
@@ -22,8 +22,7 @@ namespace GameboyColourDecolouriser
 
         public ITile[,] OriginalTiles => _originalImage.Tiles;
 
-
-        public RecolouredImage(GbImage originalImage)
+        public RecolouredImage(GbcImage originalImage)
         {
             _originalImage = originalImage;
             _recolouredTiles = new RecolouredTile[_originalImage.Width / 8, _originalImage.Height / 8];

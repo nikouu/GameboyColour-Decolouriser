@@ -2,7 +2,7 @@
   "profiles": {
     "GameboyColourDecolouriser": {
       "commandName": "Project",
-      "commandLineArgs": "Decolourise --output \"C:\\Users\\Niko Uusitalo\\Documents\\GitHub\\Pokemon-gen-2-style-tilemap\\ayylmao2.png\" \r\n--input \"C:\\Users\\Niko Uusitalo\\Documents\\GitHub\\GameboyColour-Decolouriser\\etc\\mokkiarea-truecolour.png\""
+      "commandLineArgs": "Decolourise \"C:\\Users\\Niko Uusitalo\\Documents\\GitHub\\Pokemon-gen-2-style-tilemap\\ayylmao2.png\" \r\n\"C:\\Users\\Niko Uusitalo\\Documents\\GitHub\\GameboyColour-Decolouriser\\etc\\mokkiarea-truecolour.png\""
     }
   }
 }
