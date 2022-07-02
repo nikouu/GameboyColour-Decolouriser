@@ -10,6 +10,10 @@ namespace GameboyColourDecolouriser
         private Lazy<int> _hash;
         private Point _coordinate;
 
+        public int ColourHash => _hash.Value;
+        public HashSet<Color> Colours => _colours;
+        public Point Coordinate => _coordinate;
+        public Color[,] ColourMap => _colourMap;
 
         public Tile(Bitmap tile, int x, int y)
         {
@@ -26,19 +30,11 @@ namespace GameboyColourDecolouriser
             get => _colourMap[x, y];
         }
 
-        public int ColourHash => _hash.Value;
-
-        public HashSet<Color> Colours => _colours;
-
-        public Point Coordinate => _coordinate;
-
-        public Color[,] ColourMap => _colourMap;
-
         private void LoadTile(Bitmap tile, int x, int y)
         {
             if (tile.Width > 8 || tile.Height > 8)
             {
-                throw new ArgumentOutOfRangeException(nameof(tile));
+                throw new ArgumentException(nameof(tile));
             }
 
             _coordinate = new Point(x, y);
@@ -52,6 +48,11 @@ namespace GameboyColourDecolouriser
                     _colourMap[i, j] = colour;
                     _colours.Add(colour);
                 }
+            }
+
+            if (_colours.Count > 4)
+            {
+                throw new InvalidOperationException($"More than 4 colours found in tile: ({x}, {y}).");
             }
         }
 

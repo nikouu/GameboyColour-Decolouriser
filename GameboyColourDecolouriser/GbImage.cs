@@ -25,6 +25,8 @@ namespace GameboyColourDecolouriser
 
         public void LoadImage(Bitmap image, ProgressTask? progressTask = null)
         {
+            Validate(image);
+
             _width = image.Width;
             _height = image.Height;
             _tiles = new Tile[_width / 8, _height / 8];
@@ -95,6 +97,19 @@ namespace GameboyColourDecolouriser
             }
 
             return croppedBytes;
+        }
+
+        private void Validate(Bitmap image)
+        {
+            if (image.Height % 8 != 0)
+            {
+                throw new ArgumentException($"Image height of {image.Height} is not divisible by 8.");
+            }
+
+            if (image.Width % 8 != 0)
+            {
+                throw new ArgumentException($"Image width of {image.Width} is not divisible by 8.");
+            }
         }
     }
 }

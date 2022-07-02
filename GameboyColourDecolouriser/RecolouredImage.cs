@@ -14,6 +14,14 @@ namespace GameboyColourDecolouriser
         // Keys being the "hash" of the tile. Allows quick lookup for Colour dictionary for previously seen identical tiles
         public Dictionary<int, string> TileDictionary;
 
+        public RecolouredTile[,] Tiles => _recolouredTiles;
+
+        public bool ContainsTile(int key) => TileDictionary.ContainsKey(key);
+
+        public bool ContainsColour(string colourHash) => TileColourDictionary.ContainsKey(colourHash);
+
+        public ITile[,] OriginalTiles => _originalImage.Tiles;
+
 
         public RecolouredImage(GbImage originalImage)
         {
@@ -24,14 +32,6 @@ namespace GameboyColourDecolouriser
 
             SetupTiles();
         }
-
-        public RecolouredTile[,] Tiles => _recolouredTiles;
-
-        public bool ContainsTile(int key) => TileDictionary.ContainsKey(key);
-
-        public bool ContainsColour(string colourHash) => TileColourDictionary.ContainsKey(colourHash);
-
-        public ITile[,] OriginalTiles => _originalImage.Tiles;
 
         private void SetupTiles()
         {

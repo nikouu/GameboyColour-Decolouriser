@@ -60,9 +60,6 @@ decolouriseCommand.SetHandler((input, output) =>
 
             recolouredImage.Save(output.FullName);
         });
-
-
-
     }
 },
 inputFile, outputFile);
