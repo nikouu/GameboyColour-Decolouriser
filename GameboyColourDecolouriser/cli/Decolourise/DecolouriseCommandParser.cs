@@ -7,13 +7,13 @@ namespace GameboyColourDecolouriser.cli.Decolourise
         public static readonly Argument<FileInfo> InputFileArgument = new Argument<FileInfo>()
         {
             Name = "input",
-            Description = "The input Gameboy Colour image."
+            Description = "The path of the input Gameboy Colour image."
         };
 
         public static readonly Argument<FileInfo> OutputFileArgument = new Argument<FileInfo>()
         {
             Name = "output",
-            Description = "The full path of the output Gameboy image file."
+            Description = "The path of the output Gameboy image."
         };
 
         private static readonly Command Command = ConstructCommand();
@@ -26,6 +26,7 @@ namespace GameboyColourDecolouriser.cli.Decolourise
         private static Command ConstructCommand()
         {
             var command = new Command("Decolourise", "Decolourises a Gameboy Color image into a Gameboy image.");
+            command.AddAlias("Decolourize");
 
             command.AddArgument(InputFileArgument);
             command.AddArgument(OutputFileArgument);
