@@ -71,8 +71,6 @@ namespace GameboyColourDecolouriser
 
             unfinishedTiles = unfinishedTiles.Where(x => !x.IsFullyRecoloured).ToList();
 
-            // dead code?
-            var brightnessDictionary = mostUsedGbColoursPerRealColourDictionary.ToLookup(x => x.Key.GetPerceivedBrightness(), z => z);
             RecolourBasedOnNearestSimilarColours(unfinishedTiles);
 
             return _recolouredImage.Tiles;
