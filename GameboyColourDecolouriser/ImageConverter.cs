@@ -1,35 +1,22 @@
-﻿using Spectre.Console;
+﻿using GameboyColourDecolouriser.Models;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Runtime.InteropServices;
-using Color = System.Drawing.Color;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GameboyColourDecolouriser
 {
-    public class GbcImage
+    public static class ImageConverter
     {
-        private int _width;
-        private int _height;
-
-        private Tile[,] _tiles;
-
-        public Tile[,] Tiles => _tiles;
-        public int Width => _width;
-        public int Height => _height;
-
-        public void LoadImage(string filePath, ProgressTask? progressTask = null)
+        public static GbcImage ToGbcImage(string imagePath)
         {
-            var image = new Bitmap(filePath);
-            LoadImage(image, progressTask);
-        }
-
-        public void LoadImage(Bitmap image, ProgressTask? progressTask = null)
-        {
-            Validate(image);
-
-            _width = image.Width;
-            _height = image.Height;
-            _tiles = new Tile[_width / 8, _height / 8];
+            var image = new Bitmap(imagePath);
+            ValidateImage(image);
+            var tiles = new Tile[image.Width / 8, image.Height / 8];
 
             // https://stackoverflow.com/a/9691388
             var rawImage = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, image.PixelFormat);
@@ -51,31 +38,44 @@ namespace GameboyColourDecolouriser
 
                     croppedBitmap.UnlockBits(croppedData);
 
-                    _tiles[i / 8, j / 8] = new Tile(croppedBitmap, i / 8, j / 8);
+                    tiles[i / 8, j / 8] = new Tile(croppedBitmap, i / 8, j / 8);
                 }
 
-                progressTask?.Increment(((double)8 / image.Width) * 100);
+                //progressTask?.Increment(((double)8 / image.Width) * 100);
             }
 
             image.UnlockBits(rawImage);
+
+            return new GbcImage(image.Width, image.Height, tiles);
         }
 
-        public Color GetPixel(int x, int y)
+        public static Bitmap ToImage(DmgImage dmgImage)
         {
-            var tileArrayX = x / 8;
-            var tileArrayY = y / 8;
+            var recolouredImage = new Bitmap(dmgImage.Width, dmgImage.Height);
 
-            var tileX = x % 8;
-            var tileY = y % 8;
+            for (int i = 0; i < dmgImage.Width; i++)
+            {
+                for (int j = 0; j < dmgImage.Height; j++)
+                {
+                    var tileArrayX = i / 8;
+                    var tileArrayY = j / 8;
 
-            var tile = _tiles[tileArrayX, tileArrayY];
+                    var tileX = i % 8;
+                    var tileY = j % 8;
 
-            var colour = tile[tileX, tileY];
+                    var tile = dmgImage.Tiles[tileArrayX, tileArrayY];
+                    var colour = tile[tileX, tileY];
 
-            return colour;
+                    recolouredImage.SetPixel(i, j, colour);
+                }
+
+                //_spectreTasks?.generatingFinalImage.Increment(((double)1 / dmgImage.Width) * 100);
+            }
+
+            return recolouredImage;
         }
 
-        private byte[] GetCroppedImage(byte[] imageBytes, int stride, int x, int y, int width, int height)
+        private static byte[] GetCroppedImage(byte[] imageBytes, int stride, int x, int y, int width, int height)
         {
             var bpp = 4;
             byte[] croppedBytes = new byte[width * height * bpp];
@@ -99,7 +99,7 @@ namespace GameboyColourDecolouriser
             return croppedBytes;
         }
 
-        private void Validate(Bitmap image)
+        private static void ValidateImage(Bitmap image)
         {
             if (image.Height % 8 != 0)
             {

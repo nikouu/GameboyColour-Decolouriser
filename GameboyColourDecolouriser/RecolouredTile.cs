@@ -27,9 +27,9 @@ namespace GameboyColourDecolouriser
         public Dictionary<Color, Color> ColourDictionaryCopy => _colourDictionary;
         public IEnumerable<((int x, int y) coordinates, Color item)> ToIEnumerable() => ColourMap.ToIEnumerableWithCoords();
 
-        public RecolouredTile(Tile originalTile)
+        public RecolouredTile(ITile originalTile)
         {
-            _originalTile = originalTile;
+            _originalTile = originalTile as Tile;
             _gbColourMap = new Color[8, 8];
 
             _originalColourCount = new Lazy<int>(() => OriginalColours.Count);

@@ -41,19 +41,18 @@ namespace GameboyColourDecolouriser.cli.Decolourise
 
                 var spectreTasks = new SpectreTasks(decolourStageOne, decolourStageTwo, decolourStageThree, decolourStageFour, generatingFinalImage);
 
-                var gbImage = new GbcImage();
-
-                gbImage.LoadImage(inputFile.FullName, loadingImage);
+                var gbcImage = ImageConverter.ToGbcImage(inputFile.FullName);
 
                 var decolouriser = new Decolouriser();
 
-                var recolouredImage = decolouriser.Decolourise(gbImage, spectreTasks);
+                var gbImage = decolouriser.Decolourise(gbcImage, spectreTasks);
 
                 if (!Directory.Exists(outputFile.DirectoryName))
                 {
                     Directory.CreateDirectory(outputFile.DirectoryName);
                 }
 
+                var recolouredImage = ImageConverter.ToImage(gbImage);
                 recolouredImage.Save(outputFile.FullName);
             });
 

@@ -1,6 +1,7 @@
-﻿using Spectre.Console;
+﻿using GameboyColourDecolouriser.Models;
+using Spectre.Console;
 using System.Drawing;
-using Color = System.Drawing.Color;
+using Color = System.Drawing.Color; // todo: competely decouple from system drawing here
 
 namespace GameboyColourDecolouriser
 {
@@ -11,59 +12,41 @@ namespace GameboyColourDecolouriser
         private Color GBDark => Color.FromArgb(48, 104, 80);
         private Color GBBlack => Color.FromArgb(7, 24, 33);
 
-        private RecolouredImage _recolouredImage;
+        //private RecolouredImage _recolouredImage; // todo: remove this field
 
         private SpectreTasks? _spectreTasks;
 
-        public Bitmap Decolourise(GbcImage gbcImage, SpectreTasks? spectreTasks = null)
+        public GbImage Decolourise(GbcImage gbcImage, SpectreTasks? spectreTasks = null)
         {
-            _recolouredImage = new RecolouredImage(gbcImage);
+            var recolouredImage = new RecolouredImage(gbcImage);
             _spectreTasks = spectreTasks;
 
-            var recolouredTiles = Process();
-            var recolouredImage = CreateRecolouredImage(gbcImage, recolouredTiles);
+            var recolouredTiles = Process(recolouredImage);
 
-            return recolouredImage;
+            // todo: redo this when properly moved to new gb model
+            var gbImage = new GbImage(gbcImage.Width, gbcImage.Height, recolouredTiles);
+            //var recolouredImage = CreateRecolouredImage(gbcImage, recolouredTiles);
+
+            return gbImage;
         }
 
         private Bitmap CreateRecolouredImage(GbcImage gbcImage, ITile[,] tiles)
         {
-            var recolouredImage = new Bitmap(gbcImage.Width, gbcImage.Height);
-
-            for (int i = 0; i < gbcImage.Width; i++)
-            {
-                for (int j = 0; j < gbcImage.Height; j++)
-                {
-                    var tileArrayX = i / 8;
-                    var tileArrayY = j / 8;
-
-                    var tileX = i % 8;
-                    var tileY = j % 8;
-
-                    var tile = tiles[tileArrayX, tileArrayY];
-                    var colour = tile[tileX, tileY];
-
-                    recolouredImage.SetPixel(i, j, colour);
-                }
-
-                _spectreTasks?.generatingFinalImage.Increment(((double)1 / gbcImage.Width) * 100);
-            }
-
-            return recolouredImage;
+            
         }
 
-        private ITile[,] Process()
+        private RecolouredTile[,] Process(RecolouredImage recolouredImage)
         {
-            RecolourBasedOnFourColourTiles(_recolouredImage);
+            RecolourBasedOnFourColourTiles(recolouredImage);
 
             // imagine actually writing this horror of a linq statement
-            var mostUsedGbColoursPerRealColourDictionary = _recolouredImage.TileColourDictionary
+            var mostUsedGbColoursPerRealColourDictionary = recolouredImage.TileColourDictionary
                 .SelectMany(x => x.Value)
                 .OrderByDescending(x => x.Key.GetPerceivedBrightness())
                 .GroupBy(x => x.Key)
                 .ToDictionary(x => x.Key, y => y.GroupBy(x => x.Value).OrderByDescending(x => x.Key).First().First().Value);
 
-            var unfinishedTiles = _recolouredImage.Tiles.ToIEnumerable().Where(x => !x.IsFullyRecoloured).ToList();
+            var unfinishedTiles = recolouredImage.Tiles.ToIEnumerable().Where(x => !x.IsFullyRecoloured).ToList();
             RecolourBasedOnTransparentTiles(unfinishedTiles);
 
             unfinishedTiles = unfinishedTiles.Where(x => !x.IsFullyRecoloured).ToList();
@@ -71,23 +54,23 @@ namespace GameboyColourDecolouriser
 
             unfinishedTiles = unfinishedTiles.Where(x => !x.IsFullyRecoloured).ToList();
 
-            RecolourBasedOnNearestSimilarColours(unfinishedTiles);
+            RecolourBasedOnNearestSimilarColours(recolouredImage, unfinishedTiles);
 
-            return _recolouredImage.Tiles;
+            return recolouredImage.Tiles;
         }
 
-        private void RecolourBasedOnNearestSimilarColours(List<RecolouredTile> unfinishedTiles)
+        private void RecolourBasedOnNearestSimilarColours(RecolouredImage recolouredImage, List<RecolouredTile> unfinishedTiles)
         {
             foreach (var unfinishedTile in unfinishedTiles)
             {
-                if (_recolouredImage.ContainsTile(unfinishedTile.OriginalTileHash))
+                if (recolouredImage.ContainsTile(unfinishedTile.OriginalTileHash))
                 {
-                    var colourDictionaryKey = _recolouredImage.TileDictionary[unfinishedTile.OriginalTileHash];
-                    ProcessFromExistingTileDictionary(unfinishedTile, _recolouredImage.TileColourDictionary[colourDictionaryKey]);
+                    var colourDictionaryKey = recolouredImage.TileDictionary[unfinishedTile.OriginalTileHash];
+                    ProcessFromExistingTileDictionary(unfinishedTile, recolouredImage.TileColourDictionary[colourDictionaryKey]);
                 }
-                else if (_recolouredImage.ContainsColour(unfinishedTile.ColourKeyString))
+                else if (recolouredImage.ContainsColour(unfinishedTile.ColourKeyString))
                 {
-                    ProcessFromExistingTileDictionary(unfinishedTile, _recolouredImage.TileColourDictionary[unfinishedTile.ColourKeyString]);
+                    ProcessFromExistingTileDictionary(unfinishedTile, recolouredImage.TileColourDictionary[unfinishedTile.ColourKeyString]);
                 }
                 else
                 {
@@ -118,7 +101,7 @@ namespace GameboyColourDecolouriser
                             continue;
                         }
                     }
-                    UpdateImageDictionaryCaches(_recolouredImage, unfinishedTile);
+                    UpdateImageDictionaryCaches(recolouredImage, unfinishedTile);
                 }
 
                 _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count) * 100);
