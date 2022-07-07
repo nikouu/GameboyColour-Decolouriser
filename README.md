@@ -108,7 +108,7 @@ And that's how we get the final image from Gameboy Color to Gameboy:
 ### Brightness
 It turns out, brightness isn't as easy as I thought. This project uses `System.Drawing.Color` which has a [`.GetBrightness()`](https://docs.microsoft.com/en-us/dotnet/api/system.drawing.color.getbrightness?view=net-6.0) method, except this ordered some colours in a way I didn't expect. For instance in the image below, the colour on the left is considered brighter than the colour on the right.
 
-![iamge](etc/BrightnessComparison.png)
+![image](etc/BrightnessComparison.png)
 
 To get around this I looked for a custom implementation and that's when I realised there are all sorts of ways to try to capture the concept of "brightness". In the end I found an ancient (2008) post called [Calculating the Perceived Brightness of a Color](https://www.nbdtech.com/Blog/archive/2008/04/27/calculating-the-perceived-brightness-of-a-color.aspx) by [Nir Dobovizki](https://twitter.com/NirDobovizki). And used that algorithm - which has suited my use cases so far.
 
@@ -116,8 +116,8 @@ Here's a comparison between the in-built and custom brightness code (bigger numb
 
 | Colour                                        | .NET `.GetBrightness()` | Custom `.GetPerceivedBrightness()` |
 | --------------------------------------------- | ----------------------- | ---------------------------------- |
-| <span style="color:#a08840"> ■ </span> #a08840 | **0.4392157**           | 138                                |
-| <span style="color:#c7c800"> ■ </span> #c7c800 | 0.392156869             | **192**                            |
+| ![image](etc/brightness-brownyellow.png) #a08840 | **0.4392157**           | 138                                |
+| ![image](etc/brightness-greenyellow.png) #c7c800 | 0.392156869             | **192**                            |
 
 (Note: It doesn't matter that the number ranges for the calls are different, we're just interested in which, for the same method, is brighter for each colour.)
 
