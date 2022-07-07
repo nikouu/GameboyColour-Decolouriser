@@ -1,12 +1,7 @@
 ﻿using GameboyColourDecolouriser.Models;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameboyColourDecolouriser
 {
@@ -38,7 +33,9 @@ namespace GameboyColourDecolouriser
 
                     croppedBitmap.UnlockBits(croppedData);
 
-                    tiles[i / 8, j / 8] = new Tile(croppedBitmap, i / 8, j / 8);
+                    var colourMap = GetColourMap(croppedBitmap);
+
+                    tiles[i / 8, j / 8] = new Tile(colourMap, i / 8, j / 8);
                 }
 
                 //progressTask?.Increment(((double)8 / image.Width) * 100);
@@ -66,7 +63,7 @@ namespace GameboyColourDecolouriser
                     var tile = dmgImage.Tiles[tileArrayX, tileArrayY];
                     var colour = tile[tileX, tileY];
 
-                    recolouredImage.SetPixel(i, j, colour);
+                    recolouredImage.SetPixel(i, j, Color.FromArgb(colour.A, colour.R, colour.G, colour.B));
                 }
 
                 //_spectreTasks?.generatingFinalImage.Increment(((double)1 / dmgImage.Width) * 100);
@@ -110,6 +107,36 @@ namespace GameboyColourDecolouriser
             {
                 throw new ArgumentException($"Image width of {image.Width}px is not divisible by 8.");
             }
+        }
+
+        private static Colour[,] GetColourMap(Bitmap tile)
+        {
+            if (tile.Width > 8 || tile.Height > 8)
+            {
+                throw new ArgumentException(nameof(tile));
+            }
+
+            var colourMap = new Colour[8, 8];
+            var colours = new HashSet<Colour>();
+
+            for (int i = 0; i < tile.Width; i++)
+            {
+                for (int j = 0; j < tile.Height; j++)
+                {
+                    var drawingColour = tile.GetPixel(i, j);
+                    var colour = Colour.FromArgb(drawingColour.A, drawingColour.R, drawingColour.G, drawingColour.B);
+
+                    colourMap[i, j] = colour;
+                    colours.Add(colour);
+                }
+            }
+
+            if (colours.Count > 4)
+            {
+                throw new InvalidOperationException($"More than 4 colours found in a single tile.");
+            }
+
+            return colourMap;
         }
     }
 }

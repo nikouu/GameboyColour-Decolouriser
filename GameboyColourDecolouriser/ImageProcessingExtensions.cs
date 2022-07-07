@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace GameboyColourDecolouriser
+﻿namespace GameboyColourDecolouriser
 {
     public static class ImageProcessingExtensions
     {
@@ -32,20 +30,5 @@ namespace GameboyColourDecolouriser
                 }
             }
         }
-
-        // https://www.nbdtech.com/Blog/archive/2008/04/27/calculating-the-perceived-brightness-of-a-color.aspx
-        public static int GetPerceivedBrightness(this Color c)
-        {
-            return (int)Math.Sqrt(
-               c.R * c.R * .241 +
-               c.G * c.G * .691 +
-               c.B * c.B * .068);
-        }
-
-        // Different from the original Color.IsEmpty() as that has extra checks for uninitialised data
-        // meaning even if all argb values are set to 0, IsEmpty() may still return false.
-        public static bool IsBlank(this Color colour)
-            => colour.A == 0 && colour.R == 0 && colour.G == 0 && colour.B == 0;
-
     }
 }

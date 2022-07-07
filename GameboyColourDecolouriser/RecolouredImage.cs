@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using GameboyColourDecolouriser.Models;
 
 namespace GameboyColourDecolouriser
 {
@@ -9,7 +9,7 @@ namespace GameboyColourDecolouriser
         private readonly RecolouredTile[,] _recolouredTiles;
 
         // Keys being the colours in the tile, ordered by brightness, and values being the gb colours, in the same order
-        public Dictionary<string, Dictionary<Color, Color>> TileColourDictionary = new();
+        public Dictionary<string, Dictionary<Colour, Colour>> TileColourDictionary = new();
 
         // Keys being the "hash" of the tile. Allows quick lookup for Colour dictionary for previously seen identical tiles
         public Dictionary<int, string> TileDictionary = new();
@@ -34,7 +34,7 @@ namespace GameboyColourDecolouriser
             var originalTileIterator = _originalImage.Tiles.ToIEnumerable();
             foreach (var originalTile in originalTileIterator)
             {
-                _recolouredTiles[originalTile.Coordinate.X, originalTile.Coordinate.Y] = new RecolouredTile(originalTile);
+                _recolouredTiles[originalTile.X, originalTile.Y] = new RecolouredTile(originalTile);
             }
         }
     }

@@ -1,59 +1,39 @@
-﻿using System.Drawing;
+﻿using GameboyColourDecolouriser.Models;
 using System.Text;
 
 namespace GameboyColourDecolouriser
 {
     public class Tile : ITile
     {
-        private readonly Color[,] _colourMap;
-        private readonly HashSet<Color> _colours;
+        private readonly Colour[,] _colourMap;
+        private readonly HashSet<Colour> _colours;
         private Lazy<int> _hash;
-        private Point _coordinate;
+        private readonly int _x;
+        private readonly int _y;
 
         public int ColourHash => _hash.Value;
-        public HashSet<Color> Colours => _colours;
-        public Point Coordinate => _coordinate;
-        public Color[,] ColourMap => _colourMap;
+        public HashSet<Colour> Colours => _colours;
+        public int X => _x;
+        public int Y => _y;
+        public Colour[,] ColourMap => _colourMap;
 
-        public Tile(Bitmap tile, int x, int y)
+        public Tile(Colour[,] colourMap, int x, int y)
         {
-
-            _colourMap = new Color[8, 8];
-            _colours = new HashSet<Color>();
+            _colourMap = colourMap;
+            _x = x; 
+            _y = y;
+            _colours = new HashSet<Colour>();
             _hash = new Lazy<int>(() => GenerateHash()); // hm, this should be ensured to only be called after a load
-            LoadTile(tile, x, y);
 
+            foreach (var ((i, j), colour) in _colourMap.ToIEnumerableWithCoords())
+            {
+                _colours.Add(colour);
+            }
         }
 
-        public Color this[int x, int y]
+        public Colour this[int x, int y]
         {
             get => _colourMap[x, y];
-        }
-
-        private void LoadTile(Bitmap tile, int x, int y)
-        {
-            if (tile.Width > 8 || tile.Height > 8)
-            {
-                throw new ArgumentException(nameof(tile));
-            }
-
-            _coordinate = new Point(x, y);
-
-            for (int i = 0; i < tile.Width; i++)
-            {
-                for (int j = 0; j < tile.Height; j++)
-                {
-                    var colour = tile.GetPixel(i, j);
-
-                    _colourMap[i, j] = colour;
-                    _colours.Add(colour);
-                }
-            }
-
-            if (_colours.Count > 4)
-            {
-                throw new InvalidOperationException($"More than 4 colours found in tile: ({x}, {y}).");
-            }
         }
 
         private int GenerateHash()

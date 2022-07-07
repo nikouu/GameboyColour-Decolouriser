@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using GameboyColourDecolouriser.Models;
 using System.Text;
 
 namespace GameboyColourDecolouriser
@@ -6,38 +6,39 @@ namespace GameboyColourDecolouriser
     public class RecolouredTile : ITile
     {
         private readonly Tile _originalTile;
-        private readonly Color[,] _gbColourMap;
-        private readonly HashSet<Color> _gbColours = new();
+        private readonly Colour[,] _gbColourMap;
+        private readonly HashSet<Colour> _gbColours = new();
         // key is original colour
-        private readonly Dictionary<Color, Color> _colourDictionary = new();
+        private readonly Dictionary<Colour, Colour> _colourDictionary = new();
         private Lazy<int> _originalColourCount;
         private readonly Lazy<int> _originalTileHash;
         private Lazy<string> _colourKeyString;
 
         public int ColourHash => 0;
-        public HashSet<Color> Colours => _gbColours;
-        public Color[,] ColourMap => _gbColourMap;
-        public HashSet<Color> OriginalColours => _originalTile.Colours;
+        public HashSet<Colour> Colours => _gbColours;
+        public Colour[,] ColourMap => _gbColourMap;
+        public HashSet<Colour> OriginalColours => _originalTile.Colours;
         public int OriginalColourCount => _originalColourCount.Value;
-        public Color[,] OriginalTileColourMap => _originalTile.ColourMap;
-        public Point Coordinate => _originalTile.Coordinate;
+        public Colour[,] OriginalTileColourMap => _originalTile.ColourMap;
+        public int X => _originalTile.X;
+        public int Y => _originalTile.Y;
         public int OriginalTileHash => _originalTileHash.Value;
         public bool IsFullyRecoloured => OriginalColourCount == Colours.Count;
-        public Color ColourDictionary(Color colour) => _colourDictionary[colour];
-        public Dictionary<Color, Color> ColourDictionaryCopy => _colourDictionary;
-        public IEnumerable<((int x, int y) coordinates, Color item)> ToIEnumerable() => ColourMap.ToIEnumerableWithCoords();
+        public Colour ColourDictionary(Colour colour) => _colourDictionary[colour];
+        public Dictionary<Colour, Colour> ColourDictionaryCopy => _colourDictionary;
+        public IEnumerable<((int x, int y) coordinates, Colour item)> ToIEnumerable() => ColourMap.ToIEnumerableWithCoords();
 
         public RecolouredTile(ITile originalTile)
         {
             _originalTile = originalTile as Tile;
-            _gbColourMap = new Color[8, 8];
+            _gbColourMap = new Colour[8, 8];
 
             _originalColourCount = new Lazy<int>(() => OriginalColours.Count);
             _colourKeyString = new Lazy<string>(() => GenerateColourKeyString());
             _originalTileHash = new Lazy<int>(() => _originalTile.ColourHash);
         }
 
-        public Color this[int x, int y]
+        public Colour this[int x, int y]
         {
             get => _gbColourMap[x, y];
             set
