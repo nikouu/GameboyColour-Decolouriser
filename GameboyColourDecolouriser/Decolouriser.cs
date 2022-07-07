@@ -1,16 +1,14 @@
 ﻿using GameboyColourDecolouriser.Models;
 using Spectre.Console;
-using System.Drawing;
-using Color = System.Drawing.Color; // todo: competely decouple from system drawing here
 
 namespace GameboyColourDecolouriser
 {
     public class Decolouriser
     {
-        private Color GBWhite => Color.FromArgb(224, 248, 207);
-        private Color GBLight => Color.FromArgb(134, 192, 108);
-        private Color GBDark => Color.FromArgb(48, 104, 80);
-        private Color GBBlack => Color.FromArgb(7, 24, 33);
+        private Colour GBWhite => Colour.FromArgb(224, 248, 207);
+        private Colour GBLight => Colour.FromArgb(134, 192, 108);
+        private Colour GBDark => Colour.FromArgb(48, 104, 80);
+        private Colour GBBlack => Colour.FromArgb(7, 24, 33);
 
         //private RecolouredImage _recolouredImage; // todo: remove this field
 
@@ -73,14 +71,14 @@ namespace GameboyColourDecolouriser
                     {
                         var currentOriginalColour = unfinishedTile.OriginalTileColourMap[i, j];
 
-                        if (colour.IsEmpty && (unfinishedTile.IsFullyRecoloured || unfinishedTile.ColourDictionaryCopy.ContainsKey(currentOriginalColour)))
+                        if (colour.IsDefault && (unfinishedTile.IsFullyRecoloured || unfinishedTile.ColourDictionaryCopy.ContainsKey(currentOriginalColour)))
                         {
                             // the colour has been found in a previous loop, and now its time to apply that colour to the remaining pixels
                             unfinishedTile[i, j] = unfinishedTile.ColourDictionary(unfinishedTile.OriginalTileColourMap[i, j]);
                         }
-                        else if (colour.IsEmpty && !unfinishedTile.IsFullyRecoloured)
+                        else if (colour.IsDefault && !unfinishedTile.IsFullyRecoloured)
                         {
-                            var remainingColourOptions = new List<Color> { GBWhite, GBLight, GBDark, GBBlack }.Except(unfinishedTile.Colours).ToDictionary(x => x.GetPerceivedBrightness(), z => z);
+                            var remainingColourOptions = new List<Colour> { GBWhite, GBLight, GBDark, GBBlack }.Except(unfinishedTile.Colours).ToDictionary(x => x.GetPerceivedBrightness(), z => z);
 
                             var currentOriginalColourBrightness = currentOriginalColour.GetPerceivedBrightness();
 
@@ -103,7 +101,7 @@ namespace GameboyColourDecolouriser
             }
         }
 
-        private void RecolourBasedOnExistingTileColours(Dictionary<Color, Color> mostUsedGbColoursPerRealColourDictionary, List<RecolouredTile> unfinishedTiles)
+        private void RecolourBasedOnExistingTileColours(Dictionary<Colour, Colour> mostUsedGbColoursPerRealColourDictionary, List<RecolouredTile> unfinishedTiles)
         {
             foreach (var unfinishedTile in unfinishedTiles)
             {
@@ -133,7 +131,7 @@ namespace GameboyColourDecolouriser
 
                 var singleColour = unfinishedTile.OriginalColours.First();
 
-                if (singleColour.IsBlank())
+                if (singleColour.IsBlank)
                 {
                     foreach (var ((i, j), colour) in unfinishedTile.ToIEnumerable())
                     {
@@ -190,7 +188,7 @@ namespace GameboyColourDecolouriser
         private void UpdateImageDictionaryCaches(RecolouredImage recolouredImage, RecolouredTile tile)
         {
             var tileColourDictionaryKeys = tile.OriginalColours.OrderBy(x => x.GetPerceivedBrightness());
-            var tileColourDictionaryValues = new List<Color>();
+            var tileColourDictionaryValues = new List<Colour>();
 
             foreach (var tileColour in tileColourDictionaryKeys)
             {
@@ -201,7 +199,7 @@ namespace GameboyColourDecolouriser
             recolouredImage.TileDictionary.TryAdd(tile.OriginalTileHash, tile.ColourKeyString);
         }
 
-        private void ProcessFromExistingTileDictionary(RecolouredTile recolouredTile, Dictionary<Color, Color> dictionary)
+        private void ProcessFromExistingTileDictionary(RecolouredTile recolouredTile, Dictionary<Colour, Colour> dictionary)
         {
             foreach (var ((i, j), colour) in recolouredTile.ToIEnumerable())
             {
@@ -232,7 +230,7 @@ namespace GameboyColourDecolouriser
 
         private void ProcessFourColours(RecolouredTile recolouredTile)
         {
-            var possibleGBColours = new List<Color> { GBWhite, GBLight, GBDark, GBBlack };
+            var possibleGBColours = new List<Colour> { GBWhite, GBLight, GBDark, GBBlack };
             var lightestToDarkestColours = recolouredTile.OriginalColours.OrderByDescending(x => x.GetPerceivedBrightness()).ToList();
 
             var localColourMap = lightestToDarkestColours.Zip(possibleGBColours, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);

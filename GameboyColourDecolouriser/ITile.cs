@@ -1,16 +1,17 @@
-﻿using System.Drawing;
+﻿using GameboyColourDecolouriser.Models;
 
 namespace GameboyColourDecolouriser
 {
     public interface ITile
     {
-        Point Coordinate { get; }
+        int X { get; }
+        int Y { get; }
 
         // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/indexers/indexers-in-interfaces
-        Color this[int x, int y] { get; }
+        Colour this[int x, int y] { get; }
 
-        HashSet<Color> Colours { get; }
-        Color[,] ColourMap { get; }
+        HashSet<Colour> Colours { get; }
+        Colour[,] ColourMap { get; }
 
         int ColourHash { get; }
     }
