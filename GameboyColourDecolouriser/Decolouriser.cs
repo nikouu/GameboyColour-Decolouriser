@@ -30,11 +30,6 @@ namespace GameboyColourDecolouriser
             return gbImage;
         }
 
-        private Bitmap CreateRecolouredImage(GbcImage gbcImage, ITile[,] tiles)
-        {
-            
-        }
-
         private RecolouredTile[,] Process(RecolouredImage recolouredImage)
         {
             RecolourBasedOnFourColourTiles(recolouredImage);
