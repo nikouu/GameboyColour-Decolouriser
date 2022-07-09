@@ -29,11 +29,16 @@ Show help and usage information
 	- Decolourises a Gameboy Color image into a Gameboy image.
 
 ### Building
-This project targets .NET 6.
+This project targets .NET 7 Preview 7+.
 
 If you want to build and run yourself either:
 1. Open the `.sln` in Visual Studio 2022 (or higher)
 1. Use `dotnet run Decolourise <input> <output>` in the directory with the `.sln`.
+
+### Publishing
+`dotnet publish -c Release -r win-x64 --self-contained`
+
+Or change `win-x64` to any other [RID](https://docs.microsoft.com/en-gb/dotnet/core/rid-catalog).
 
 ## Why tho?
 
@@ -155,6 +160,15 @@ Talking about colour, I realised that if I wanted to make this tool as cross pla
 The next biggest problem was to pick an acceptable cross platform image processing replacement. All I really need is:
 1. Get colour values of each pixel
 1. Create image by setting colour values of each pixel 
+
+### Trimming
+I love trimming. I've done a whole bunch of work in the preview for AOT in my repo: [TinyWordle](https://github.com/nikouu/TinyWordle). .NET 7 will have trimming built in and I've introduced it via adding the following to the `.csproj` file:
+```xml
+<PublishTrimmed>true</PublishTrimmed>
+<PublishSingleFile>true</PublishSingleFile>
+<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+```
+`IncludeNativeLibrariesForSelfExtract` makes sure the SkiaSharp `.dll` is bundled into the `.exe` 
 
 ## Previous attempts and issues
 - Originally each tile just had it's colours ordered brightest to darkest and using the C# LINQ `.Zip()` call to try to marry them up.
