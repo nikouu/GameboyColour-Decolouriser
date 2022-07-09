@@ -30,7 +30,7 @@ namespace GameboyColourDecolouriser
 
         public RecolouredTile(ITile originalTile)
         {
-            _originalTile = originalTile as Tile;
+            _originalTile = (Tile)originalTile;
             _gbColourMap = new Colour[8, 8];
 
             _originalColourCount = new Lazy<int>(() => OriginalColours.Count);

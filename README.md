@@ -36,9 +36,14 @@ If you want to build and run yourself either:
 1. Use `dotnet run Decolourise <input> <output>` in the directory with the `.sln`.
 
 ### Publishing
-`dotnet publish -c Release -r win-x64 --self-contained`
 
-Or change `win-x64` to any other [RID](https://docs.microsoft.com/en-gb/dotnet/core/rid-catalog).
+`dotnet publish -c Release -r win-x64`
+
+`dotnet publish -c Release -r osx-x64`
+
+`dotnet publish -c Release -r linux-x64`
+
+[RID reference](https://docs.microsoft.com/en-gb/dotnet/core/rid-catalog)
 
 ## Why tho?
 
