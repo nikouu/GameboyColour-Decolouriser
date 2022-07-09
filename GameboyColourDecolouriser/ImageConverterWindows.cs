@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace GameboyColourDecolouriser
 {
+    /*
     public static class ImageConverterWindows
     {
         public static GbcImage ToGbcImage(string imagePath)
@@ -141,4 +142,5 @@ namespace GameboyColourDecolouriser
             return colourMap;
         }
     }
+    */
 }
