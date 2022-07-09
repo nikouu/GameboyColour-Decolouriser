@@ -6,10 +6,15 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+		<SelfContained>true</SelfContained>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 		<PublishTrimmed>true</PublishTrimmed>
 		<PublishSingleFile>true</PublishSingleFile>
-
-		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<PublishReadyToRun>true</PublishReadyToRun>
+		<DebugType>embedded</DebugType>
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
 	</PropertyGroup>
 
 	<ItemGroup>

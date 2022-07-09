@@ -170,7 +170,6 @@ namespace GameboyColourDecolouriser
                         UpdateImageDictionaryCaches(recolouredImage, tile);
                     }
                 }
-                AnsiConsole.WriteLine("ayylmao");
                 _spectreTasks?.decolourStageOne.Increment(((double)1 / tileGroups.Count) * 100);
             }
         }

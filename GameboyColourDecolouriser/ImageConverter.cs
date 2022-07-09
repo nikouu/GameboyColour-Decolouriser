@@ -1,5 +1,6 @@
 ﻿using GameboyColourDecolouriser.Models;
 using SkiaSharp;
+using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace GameboyColourDecolouriser
 {
     public static class ImageConverter
     {
-        public static GbcImage ToGbcImage(string imagePath)
+        public static GbcImage ToGbcImage(string imagePath, ProgressTask? progressTask = null)
         {
             var bytes = File.ReadAllBytes(imagePath);
             using var data = SKData.CreateCopy(bytes);
@@ -35,14 +36,14 @@ namespace GameboyColourDecolouriser
                     tiles[i / 8, j / 8] = new Tile(colourMap, i / 8, j / 8);
                 }
 
-                //progressTask?.Increment(((double)8 / image.Width) * 100);
+                progressTask?.Increment(((double)8 / image.Width) * 100);
             }
 
 
             return new GbcImage(image.Width, image.Height, tiles);
         }
 
-        public static byte[] ToImageBytes(DmgImage dmgImage)
+        public static byte[] ToImageBytes(DmgImage dmgImage, ProgressTask? progressTask = null)
         {
             var recolouredImage = new SKBitmap(dmgImage.Width, dmgImage.Height);
 
@@ -62,7 +63,7 @@ namespace GameboyColourDecolouriser
                     recolouredImage.SetPixel(i, j, new SKColor(colour.R, colour.G, colour.B, colour.A));
                 }
 
-                //_spectreTasks?.generatingFinalImage.Increment(((double)1 / dmgImage.Width) * 100);
+                progressTask?.Increment(((double)1 / dmgImage.Width) * 100);
             }
 
             return recolouredImage.Encode(SKEncodedImageFormat.Png, 100).Span.ToArray();

@@ -91,8 +91,13 @@
 
         public bool Equals(Colour other) => this == other;
 
+        public override bool Equals(object? obj)
+        {
+            return obj is Colour other && Equals(other);
+        }
+
         public override string ToString() => ToRgbaString;
 
-
+        public override int GetHashCode() => value.GetHashCode();
     }
 }
