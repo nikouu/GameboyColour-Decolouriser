@@ -3,6 +3,11 @@
     // A trimmed version of the System.Drawing Color object
     public readonly struct Colour : IEquatable<Colour>
     {
+        public static Colour GBWhite => FromArgb(224, 248, 207);
+        public static Colour GBLight => FromArgb(134, 192, 108);
+        public static Colour GBDark => FromArgb(48, 104, 80);
+        public static Colour GBBlack => FromArgb(7, 24, 33);
+
         private readonly bool? _isDefault;
         private readonly long value;
 
@@ -44,7 +49,7 @@
         }
 
         // https://www.nbdtech.com/Blog/archive/2008/04/27/calculating-the-perceived-brightness-of-a-color.aspx
-        public int GetPerceivedBrightness()
+        public int GetBrightness()
         {
             return (int)Math.Sqrt(
                R * R * .241 +

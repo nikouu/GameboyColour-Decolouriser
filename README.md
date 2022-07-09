@@ -114,12 +114,19 @@ To get around this I looked for a custom implementation and that's when I realis
 
 Here's a comparison between the in-built and custom brightness code (bigger number = bigger brighter):
 
-| Colour                                        | .NET `.GetBrightness()` | Custom `.GetPerceivedBrightness()` |
+| Colour                                        | .NET `.GetBrightness()` | Custom `.GetBrightness()` |
 | --------------------------------------------- | ----------------------- | ---------------------------------- |
 | ![image](etc/brightness-brownyellow.png) #a08840 | **0.4392157**           | 138                                |
 | ![image](etc/brightness-greenyellow.png) #c7c800 | 0.392156869             | **192**                            |
 
 (Note: It doesn't matter that the number ranges for the calls are different, we're just interested in which, for the same method, is brighter for each colour.)
+
+### Colour libraries
+Talking about colour, I realised that if I wanted to make this tool as cross platform as Gb Studio I'll need to do away with `System.Drawing` which onlt talks to Windows APIs. I needed to decouple the tile decolouring and image code, which was easy enough to abstract out. I actually ended up taking a paired down version of `System.Drawing.Color` and customising it to my needs. 
+
+The next biggest problem was to pick an acceptable cross platform image processing replacement. All I really need is:
+1. Get colour values of each pixel
+1. Create image by setting colour values of each pixel 
 
 ## Previous attempts
 - Originally each tile just had it's colours ordered brightest to darkest and using the C# LINQ `.Zip()` call to try to marry them up.
