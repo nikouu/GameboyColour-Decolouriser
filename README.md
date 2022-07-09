@@ -167,13 +167,13 @@ The next biggest problem was to pick an acceptable cross platform image processi
 1. Create image by setting colour values of each pixel 
 
 ### Trimming
-I love trimming. I've done a whole bunch of work in the preview for AOT in my repo: [TinyWordle](https://github.com/nikouu/TinyWordle). .NET 7 will have trimming built in and I've introduced it via adding the following to the `.csproj` file:
+I love trimming. I've done a whole bunch of work in the preview/experiment for AOT in my repo: [TinyWordle](https://github.com/nikouu/TinyWordle). .NET 7 will have trimming built in and I've introduced it via adding the following to the `.csproj` file:
 ```xml
 <PublishTrimmed>true</PublishTrimmed>
 <PublishSingleFile>true</PublishSingleFile>
-<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 ```
-`IncludeNativeLibrariesForSelfExtract` makes sure the SkiaSharp `.dll` is bundled into the `.exe` 
+
+Along with my TinyWordle project, this post "[REAL Single File Publish/Build for `dotnet`](https://www.evanlouie.com/gists/dotnet/publish-single-file)" helped a lot too.
 
 ## Previous attempts and issues
 - Originally each tile just had it's colours ordered brightest to darkest and using the C# LINQ `.Zip()` call to try to marry them up.
@@ -185,7 +185,7 @@ I love trimming. I've done a whole bunch of work in the preview for AOT in my re
 
 - Turns out you can get a bug when decoding a `FileStream` in SkiaSharp where the image isn't read correctly ([Fix PNG loading issues by updating the zlib to one with fixes #2045](https://github.com/mono/SkiaSharp/pull/2045)): 
 ![image](etc/filestream-skia-bug.png)
-	- The fix at the time was to use [Version 2.88.1 (Preview Build 1)](https://github.com/mono/SkiaSharp/releases/tag/v2.88.1-preview.1)
+	- The fix at the time was to use [Version 2.88.1 (Preview Build 1)](https://github.com/mono/SkiaSharp/releases/tag/v2.88.1-preview.1) or later.
 
 
 ## Other Notes
