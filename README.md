@@ -83,7 +83,7 @@ The Gameboy and Gameboy Color both use 8x8px squares as tiles or sprites. Due to
 
 This encompasses the technical problem: How do you know what four Gameboy greens to map to true colour Gameboy Colour colours? 
 
-It sounds easy at first beacuse you just obviously map the brightest true colour to the lightest Gameboy shade and keep going that way. But if we just think of brightness, we could have problems like:
+It sounds easy at first because you just obviously map the brightest true colour to the lightest Gameboy shade and keep going that way. But if we just think of brightness, we could have problems like:
 
 - There are different ways to measure brightness which can lead to odd result
 - A darker blue on a specific tile might be the darkest for that tile, but it could be the second darkest for another tile. What Gameboy shade applies to this dark blue?
@@ -160,11 +160,13 @@ Here's a comparison between the in-built and custom brightness code (bigger numb
 (Note: It doesn't matter that the number ranges for the calls are different, we're just interested in which, for the same method, is brighter for each colour.)
 
 ### Colour libraries
-Talking about colour, I realised that if I wanted to make this tool as cross platform as Gb Studio I'll need to do away with `System.Drawing` which onlt talks to Windows APIs. I needed to decouple the tile decolouring and image code, which was easy enough to abstract out. I actually ended up taking a paired down version of `System.Drawing.Color` and customising it to my needs. 
+Talking about colour, I realised that if I wanted to make this tool as cross platform as Gb Studio I'll need to do away with `System.Drawing` which only talks to Windows APIs. I needed to decouple the tile decolouring and image code, which was easy enough to abstract out. I actually ended up taking a paired down version of `System.Drawing.Color` and customising it to my needs. 
 
 The next biggest problem was to pick an acceptable cross platform image processing replacement. All I really need is:
 1. Get colour values of each pixel
 1. Create image by setting colour values of each pixel 
+
+I wanted to have a play with [ImageSharp](https://github.com/SixLabors/ImageSharp) but at the time I wasn't entirely sure how the licence worked. So I went with [SkiaSharp](https://github.com/mono/SkiaSharp).
 
 ### Trimming
 I love trimming. I've done a whole bunch of work in the preview/experiment for AOT in my repo: [TinyWordle](https://github.com/nikouu/TinyWordle). .NET 7 will have trimming built in and I've introduced it via adding the following to the `.csproj` file:
