@@ -7,6 +7,34 @@
 
 It does this by passing over the image multiple times, making colour adjustments each time.
 
+## Usage
+Feel free to grab the latest from [releases](https://github.com/nikouu/GameboyColour-Decolouriser/releases) for your operating system.
+
+### Command line
+This is how you generally run the program.
+
+#### Example usage
+
+`GameboyColourDecolouriser.exe Decolourise "C:\input.png" "C:\output.png"`
+
+#### Synopsis
+`GameboyColourDecolouriser [command] [options]`
+
+#### Options
+`-?, -h, --help`
+Show help and usage information
+
+#### Commands
+- Decolourise (or Decolourize)
+	- Decolourises a Gameboy Color image into a Gameboy image.
+
+### Building
+This project targets .NET 6.
+
+If you want to build and run yourself either:
+1. Open the `.sln` in Visual Studio 2022 (or higher)
+1. Use `dotnet run Decolourise <input> <output>` in the directory with the `.sln`.
+
 ## Why tho?
 
 In short: I wanted a crisp image when importing into [GB Studio](https://www.gbstudio.dev/).
