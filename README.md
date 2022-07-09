@@ -156,13 +156,17 @@ The next biggest problem was to pick an acceptable cross platform image processi
 1. Get colour values of each pixel
 1. Create image by setting colour values of each pixel 
 
-## Previous attempts
+## Previous attempts and issues
 - Originally each tile just had it's colours ordered brightest to darkest and using the C# LINQ `.Zip()` call to try to marry them up.
 - There was also fiddly mapping of the black and white colours to try to reduce the problem space.
 - Ultimately my main problem was tiles of single colours that weren't present elsewhere. 
 - Below is the result of an early algorithm idea which due to guesswork by brightnesses lead to weird situations with roofing. 
 
 ![image](etc/mokkiarea-oldalgorithm.png)
+
+- Turns out you can get a bug when decoding a `FileStream` in SkiaSharp where the image isn't read correctly ([Fix PNG loading issues by updating the zlib to one with fixes #2045](https://github.com/mono/SkiaSharp/pull/2045)): 
+![image](etc/filestream-skia-bug.png)
+	- The fix at the time was to use [Version 2.88.1 (Preview Build 1)](https://github.com/mono/SkiaSharp/releases/tag/v2.88.1-preview.1)
 
 
 ## Other Notes
