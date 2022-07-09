@@ -10,21 +10,18 @@ It does this by passing over the image multiple times, making colour adjustments
 ## Usage
 Feel free to grab the latest from [releases](https://github.com/nikouu/GameboyColour-Decolouriser/releases) for your operating system.
 
-### Command line
-This is how you generally run the program.
-
-#### Example usage
+### Example
 
 `GameboyColourDecolouriser.exe Decolourise "C:\input.png" "C:\output.png"`
 
-#### Synopsis
+### Synopsis
 `GameboyColourDecolouriser [command] [options]`
 
-#### Options
+### Options
 `-?, -h, --help`
 Show help and usage information
 
-#### Commands
+### Commands
 - Decolourise (or Decolourize)
 	- Decolourises a Gameboy Color image into a Gameboy image.
 
