@@ -75,7 +75,7 @@ namespace GameboyColourDecolouriser
         {
             var stringBuilder = new StringBuilder();
 
-            foreach (var item in OriginalColours.OrderBy(x => x.GetPerceivedBrightness()))
+            foreach (var item in OriginalColours.OrderBy(x => x.GetBrightness()))
             {
                 stringBuilder.Append(item);
             }
