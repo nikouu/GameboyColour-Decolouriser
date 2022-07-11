@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using GameboyColourDecolouriser.Models;
+using Spectre.Console;
 using System.CommandLine.Parsing;
 
 namespace GameboyColourDecolouriser.cli.Decolourise
