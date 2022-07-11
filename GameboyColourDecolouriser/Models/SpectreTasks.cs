@@ -1,5 +1,5 @@
 ﻿using Spectre.Console;
-namespace GameboyColourDecolouriser;
+namespace GameboyColourDecolouriser.Models;
 
 public record class SpectreTasks(
 ProgressTask decolourStageOne,
