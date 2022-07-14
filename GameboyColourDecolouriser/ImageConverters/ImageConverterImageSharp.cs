@@ -1,5 +1,7 @@
 ﻿using GameboyColourDecolouriser.Models;
-using SkiaSharp;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
@@ -7,45 +9,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameboyColourDecolouriser
+namespace GameboyColourDecolouriser.ImageConverters
 {
-    public static class ImageConverter
+    public static class ImageConverterImageSharp
     {
         public static GbcImage ToGbcImage(string imagePath, ProgressTask? progressTask = null)
         {
-            var bytes = File.ReadAllBytes(imagePath);
-            using var data = SKData.CreateCopy(bytes);
-            using var image = SKBitmap.Decode(data);
+            using var image = Image.Load<Rgba32>(imagePath);
 
             ValidateImage(image);
             var tiles = new Tile[image.Width / 8, image.Height / 8];
-  
 
             for (int i = 0; i < image.Width; i += 8)
             {
                 for (int j = 0; j < image.Height; j += 8)
                 {
-                    var croppingRect = new SKRectI(i, j, i + 8, j + 8);
-
-                    var bitmapTile = new SKBitmap(8, 8);
-
-                    image.ExtractSubset(bitmapTile, croppingRect);
-
-                    var colourMap = GetColourMap(bitmapTile);
-
+                    var clone = image.Clone(c => c.Crop(new Rectangle(i, j, 8, 8)));
+                    var colourMap = GetColourMap(clone);
                     tiles[i / 8, j / 8] = new Tile(colourMap, i / 8, j / 8);
                 }
-
-                progressTask?.Increment(((double)8 / image.Width) * 100);
+                progressTask?.Increment((double)8 / image.Width * 100);
             }
-
 
             return new GbcImage(image.Width, image.Height, tiles);
         }
 
         public static byte[] ToImageBytes(DmgImage dmgImage, ProgressTask? progressTask = null)
         {
-            var recolouredImage = new SKBitmap(dmgImage.Width, dmgImage.Height);
+            using var image = new Image<Rgba32>(dmgImage.Width, dmgImage.Height);
 
             for (int i = 0; i < dmgImage.Width; i++)
             {
@@ -60,16 +51,21 @@ namespace GameboyColourDecolouriser
                     var tile = dmgImage.Tiles[tileArrayX, tileArrayY];
                     var colour = tile[tileX, tileY];
 
-                    recolouredImage.SetPixel(i, j, new SKColor(colour.R, colour.G, colour.B, colour.A));
+                    //recolouredImage.SetPixel(i, j, new SKColor(colour.R, colour.G, colour.B, colour.A));
+
+                    image[i, j] = new Rgba32(colour.R, colour.G, colour.B, colour.A);
                 }
 
-                progressTask?.Increment(((double)1 / dmgImage.Width) * 100);
+                progressTask?.Increment((double)1 / dmgImage.Width * 100);
             }
 
-            return recolouredImage.Encode(SKEncodedImageFormat.Png, 100).Span.ToArray();
+            using var imageStream = new MemoryStream();
+            image.SaveAsPng(imageStream);
+
+            return imageStream.ToArray();
         }
 
-        private static Colour[,] GetColourMap(SKBitmap tile)
+        private static Colour[,] GetColourMap(Image<Rgba32> tile)
         {
             if (tile.Width > 8 || tile.Height > 8)
             {
@@ -83,8 +79,8 @@ namespace GameboyColourDecolouriser
             {
                 for (int j = 0; j < tile.Height; j++)
                 {
-                    var drawingColour = tile.GetPixel(i, j);
-                    var colour = Colour.FromArgb(drawingColour.Alpha, drawingColour.Red, drawingColour.Green, drawingColour.Blue);
+                    var drawingColour = tile[i, j];
+                    var colour = Colour.FromArgb(drawingColour.A, drawingColour.R, drawingColour.G, drawingColour.B);
 
                     colourMap[i, j] = colour;
                     colours.Add(colour);
@@ -100,7 +96,7 @@ namespace GameboyColourDecolouriser
         }
 
 
-        private static void ValidateImage(SKBitmap image)
+        private static void ValidateImage(Image image)
         {
             if (image.Height % 8 != 0)
             {

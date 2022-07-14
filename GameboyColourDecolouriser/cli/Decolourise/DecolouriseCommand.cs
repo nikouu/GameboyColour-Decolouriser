@@ -1,4 +1,5 @@
-﻿using GameboyColourDecolouriser.Models;
+﻿using GameboyColourDecolouriser.ImageConverters;
+using GameboyColourDecolouriser.Models;
 using Spectre.Console;
 using System.CommandLine.Parsing;
 
@@ -47,7 +48,7 @@ namespace GameboyColourDecolouriser.cli.Decolourise
 
                 var spectreTasks = new SpectreTasks(decolourStageOne, decolourStageTwo, decolourStageThree, decolourStageFour, generatingFinalImage);
 
-                var gbcImage = ImageConverter.ToGbcImage(inputFile.FullName, loadingImage);
+                var gbcImage = ImageConverterImageSharp.ToGbcImage(inputFile.FullName, loadingImage);
 
                 var decolouriser = new Decolouriser();
 
@@ -58,7 +59,7 @@ namespace GameboyColourDecolouriser.cli.Decolourise
                     Directory.CreateDirectory(outputFile.DirectoryName);
                 }
 
-                var recolouredImageBytes = ImageConverter.ToImageBytes(gbImage, generatingFinalImage);
+                var recolouredImageBytes = ImageConverterImageSharp.ToImageBytes(gbImage, generatingFinalImage);
                 File.WriteAllBytes(outputFile.FullName, recolouredImageBytes);                
             });
 

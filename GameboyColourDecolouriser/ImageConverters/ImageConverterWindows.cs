@@ -1,9 +1,6 @@
-﻿using GameboyColourDecolouriser.Models;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
+﻿
 
-namespace GameboyColourDecolouriser
+namespace GameboyColourDecolouriser.ImageConverters
 {
     /*
     public static class ImageConverterWindows
