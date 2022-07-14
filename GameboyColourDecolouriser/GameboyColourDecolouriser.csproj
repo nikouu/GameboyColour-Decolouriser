@@ -1,15 +1,91 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-<PropertyGroup>
-	<OutputType>Exe</OutputType>
-	<TargetFramework>net7.0</TargetFramework>
-	<ImplicitUsings>enable</ImplicitUsings>
-	<Nullable>enable</Nullable>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-</PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		
 
+		
+<!-- 
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<SelfContained>true</SelfContained>
+	
+		<PublishSingleFile>false</PublishSingleFile>
+
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<IlcOptimizationPreference>Size</IlcOptimizationPreference>
+		<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+
+		<IlcTrimMetadata>true</IlcTrimMetadata>
+		<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+
+		<DebugType>none</DebugType>
+
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		<IncludeNativeLibrariesInSingleFile>true</IncludeNativeLibrariesInSingleFile>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+
+		
+		<IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+		<IlcGenerateMapFile>true</IlcGenerateMapFile>
+		<IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
+		<IlcGenerateMetadataLog>true</IlcGenerateMetadataLog>
+		<PublishAot>true</PublishAot>
+		-->
+	<!-- 	
+	
+	<SelfContained>true</SelfContained>
+		<PublishTrimmed>true</PublishTrimmed>
+		
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<IlcOptimizationPreference>Size</IlcOptimizationPreference>
+		<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+		<IlcDisableReflection>true</IlcDisableReflection>
+		<IlcTrimMetadata>true</IlcTrimMetadata>
+		<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+		<DebugType>none</DebugType>
+
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		
+		<PublishAot>true</PublishAot>
+
+
+		<IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+		<IlcGenerateMapFile>true</IlcGenerateMapFile>
+		<IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
+		-->
+		
+
+	</PropertyGroup>
+	
+	<PropertyGroup>
+				<SelfContained>true</SelfContained>
+		<PublishTrimmed>true</PublishTrimmed>
+		<PublishAot>true</PublishAot>
+		
+		<IlcDisableReflection>true</IlcDisableReflection>
+		
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<IlcOptimizationPreference>Size</IlcOptimizationPreference>
+		<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>		
+		<IlcTrimMetadata>true</IlcTrimMetadata>
+		<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+		
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<DebugType>none</DebugType>
+		<DebugSymbols>false</DebugSymbols>
+	</PropertyGroup>
+		
 	<ItemGroup>
-		<PackageReference Include="SkiaSharp" Version="2.88.1-preview.79" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
 		<PackageReference Include="Spectre.Console" Version="0.44.0" />
 		<PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-	</ItemGroup>	
+	</ItemGroup>
 </Project>
