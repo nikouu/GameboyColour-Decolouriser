@@ -5,8 +5,23 @@
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-</PropertyGroup>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	
+	<!-- Normal .NET 7 -->
+	<PublishAot>true</PublishAot>
+	<TrimmerDefaultAction>link</TrimmerDefaultAction>
+	<InvariantGlobalization>true</InvariantGlobalization>
+	<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+	<IlcOptimizationPreference>Size</IlcOptimizationPreference>
+	<DebugType>none</DebugType>
 
+	<!-- Still works from the experimental AOT version -->
+	<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+	<IlcTrimMetadata>true</IlcTrimMetadata>
+	
+	<!-- Still works from the experimental AOT version, but high risk -->
+	<!-- <IlcDisableReflection>true</IlcDisableReflection> -->	
+</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="SkiaSharp" Version="2.88.1-preview.79" />
 		<PackageReference Include="Spectre.Console" Version="0.44.0" />
