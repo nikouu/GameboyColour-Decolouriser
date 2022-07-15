@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 <PropertyGroup>
 	<OutputType>Exe</OutputType>
 	<TargetFramework>net7.0</TargetFramework>
@@ -14,6 +14,7 @@
 	<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
 	<IlcOptimizationPreference>Size</IlcOptimizationPreference>
 	<DebugType>none</DebugType>
+	<GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
 
 	<!-- Still works from the experimental AOT version -->
 	<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
