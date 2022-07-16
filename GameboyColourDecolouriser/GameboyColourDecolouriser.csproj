@@ -1,28 +1,54 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-<PropertyGroup>
-	<OutputType>Exe</OutputType>
-	<TargetFramework>net7.0</TargetFramework>
-	<ImplicitUsings>enable</ImplicitUsings>
-	<Nullable>enable</Nullable>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-	
-	<!-- Normal .NET 7 -->
-	<PublishAot>true</PublishAot>
-	<TrimmerDefaultAction>link</TrimmerDefaultAction>
-	<InvariantGlobalization>true</InvariantGlobalization>
-	<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
-	<IlcOptimizationPreference>Size</IlcOptimizationPreference>
-	<DebugType>none</DebugType>
-	<GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
 
-	<!-- Still works from the experimental AOT version -->
-	<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
-	<IlcTrimMetadata>true</IlcTrimMetadata>
-	
-	<!-- Still works from the experimental AOT version, but high risk -->
-	<!-- <IlcDisableReflection>true</IlcDisableReflection> -->	
-</PropertyGroup>
+	<PropertyGroup Condition="'$(Mode)' == 'Self-Contained'">
+		<SelfContained>true</SelfContained>
+		<PublishSingleFile>true</PublishSingleFile>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<DebugType>none</DebugType>
+		<PublishTrimmed>true</PublishTrimmed>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Mode)' == 'NativeAOT'">
+		<!-- Normal .NET 7 -->
+		<PublishAot>true</PublishAot>
+		<SelfContained>true</SelfContained>
+		<TrimmerDefaultAction>link</TrimmerDefaultAction>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+		<IlcOptimizationPreference>Size</IlcOptimizationPreference>
+		<DebugType>none</DebugType>
+		<GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
+
+		<!-- Only some may work - From the experimental AOT version -->
+		<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+		<IlcTrimMetadata>true</IlcTrimMetadata>
+		<IlcInvariantGlobalization>true</IlcInvariantGlobalization>
+		<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+		<IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
+
+		<!-- Still works from the experimental AOT version, but high risk -->
+		<!-- <IlcDisableReflection>true</IlcDisableReflection> -->
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Mode)' == 'ReadyToRun'">
+		<PublishReadyToRunComposite>true</PublishReadyToRunComposite>
+		<SelfContained>true</SelfContained>
+		<PublishSingleFile>true</PublishSingleFile>
+		<PublishTrimmed>true</PublishTrimmed>
+		<DebugType>none</DebugType>
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+		<InvariantGlobalization>true</InvariantGlobalization>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
 		<PackageReference Include="Spectre.Console" Version="0.44.0" />
