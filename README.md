@@ -22,7 +22,7 @@ Feel free to grab the latest from [releases](https://github.com/nikouu/GameboyCo
 Show help and usage information
 
 ### Commands
-- `Decolourise` (or Decolourize)
+- `Decolourise` (or `Decolourize`)
 	- Decolourises a Gameboy Color image into a Gameboy image.
 
 ### Building
