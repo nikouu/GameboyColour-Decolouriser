@@ -192,4 +192,4 @@ Along with my TinyWordle project, this post "[REAL Single File Publish/Build for
 - The code is roughly equivalent to mad ravings.
 - The working with four colour tiles, then each colour subset tile came to me in a dream.
 - It was really fun working within the constraints, especially "there are always only a maximum of four colours". Make reducing the problem space super interesting.
-- With the example image I was using, the first iteration of this project took 90s to colourise it. Fast forward and it takes sub 4 seconds.
+- With the example image I was using, the first iteration of this project took 90 seconds to colourise it. Then sub 4 seconds. *Then* sub 1 second.
