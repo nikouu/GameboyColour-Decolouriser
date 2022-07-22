@@ -3,12 +3,14 @@
     // A trimmed version of the System.Drawing Color object
     public readonly struct Colour : IEquatable<Colour>
     {
-        public static Colour GBWhite => FromArgb(224, 248, 207);
-        public static Colour GBLight => FromArgb(134, 192, 108);
-        public static Colour GBDark => FromArgb(48, 104, 80);
-        public static Colour GBBlack => FromArgb(7, 24, 33);
+        public static Colour GBWhite => FromRgb(224, 248, 207);
+        public static Colour GBLight => FromRgb(134, 192, 108);
+        public static Colour GBDark => FromRgb(48, 104, 80);
+        public static Colour GBBlack => FromRgb(7, 24, 33);
 
         private readonly bool? _isDefault;
+
+        // standard 32bit sRGB (ARGB)
         private readonly long value;
 
         private const int ARGBAlphaShift = 24;
@@ -27,8 +29,9 @@
             this.value = value;
         }
 
-        public static Colour FromArgb(int red, int green, int blue)
+        public static Colour FromRgb(int red, int green, int blue)
         {
+            // if alpha is 0, it means completely transparent and other colours won't matter
             return FromArgb(255, red, green, blue);
         }
 
