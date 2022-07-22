@@ -21,4 +21,12 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\Input\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GameboyColourDecolouriser\GameboyColourDecolouriser.csproj" />
+  </ItemGroup>
+
 </Project>
