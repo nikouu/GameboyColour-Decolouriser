@@ -51,8 +51,6 @@ namespace GameboyColourDecolouriser.ImageConverters
                     var tile = dmgImage.Tiles[tileArrayX, tileArrayY];
                     var colour = tile[tileX, tileY];
 
-                    //recolouredImage.SetPixel(i, j, new SKColor(colour.R, colour.G, colour.B, colour.A));
-
                     image[i, j] = new Rgba32(colour.R, colour.G, colour.B, colour.A);
                 }
 
