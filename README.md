@@ -115,7 +115,7 @@ Note that the insides for the paths, windows, and flowers are still transparent 
 Previously in step 1, we just focused on four colour tiles and their full subset children.
 
 1. Take a global image dictionary of each true colour and corresponding Gameboy colour
-1. Weight each true colour/Gameboy colour based on which true colour has the most Gameboy colours. **Note**: This is the first bit of guesswork and could be a source of problems. Depending on the image, a true colour could map to serveral Gameboy colours depending on the make up of that true colour tile. See the example earlier about a dark blue colour.
+1. Weight each true colour/Gameboy colour based on which true colour has the most Gameboy colours. **Note**: This is the first bit of guesswork and could be a source of problems. Depending on the image, a true colour could map to several Gameboy colours depending on the make up of that true colour tile. See the example earlier about a dark blue colour.
 1. When a true colour is found in the dictionary, paint that pixel with the corresponding most-weighted Gameboy colour.
 
 ![image](etc/mokkiarea-thirdpass.png)
