@@ -103,7 +103,7 @@ As long as there is a decent amount of four colour tiles, a good chunk of the im
 The tiles that haven't been resolved contain colours that aren't in any of the four colour tiles. Taking some examples from the image, the gravelly road has a true colour shade of grey that isn't present anywhere else, even though the white part of the road is. Same with the windows, there is a bright yellow that only appears in the windows and in no four colour tiles.
 
 #### 2. Recolour Based on transparent tiles
-PNGs are great when working with pixel-based projects, and working with a Gameboy is no different. However while the programs we use might easily undertand transparent pixels, a Gameboy doesn't. Meaning we need to replace the transparent pixels. For this, GameboyColour Decolouriser will convert any transparent pixel into the darkest Gameboy shade. I've found that often my transparent pixels are the "void", or the bits outside of the playable area and since Pokémon does that (check it out next time you're inside a small building) this does the same.
+PNGs are great when working with pixel-based projects, and working with a Gameboy is no different. However while the programs we use might easily understand transparent pixels, a Gameboy doesn't. Meaning we need to replace the transparent pixels. For this, GameboyColour Decolouriser will convert any transparent pixel into the darkest Gameboy shade. I've found that often my transparent pixels are the "void", or the bits outside of the playable area and since Pokémon does that (check it out next time you're inside a small building) this does the same.
 
 It might be a bit hard to see depending on your dark/light setting, but there is now dark tiles around the outside of the map. 
 
