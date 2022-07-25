@@ -87,4 +87,80 @@ public class ColourTests
         // Assert
         Assert.True(colour.IsDefault);
     }
+
+    [Fact]
+    public void GBWhite()
+    {
+        // Arrange
+        var alpha = 255;
+        var red = 224;
+        var green = 248;
+        var blue = 207;
+
+        // Act
+        var gbWhite = Colour.GBWhite;
+
+        // Assert
+        Assert.Equal(alpha, gbWhite.A);
+        Assert.Equal(red, gbWhite.R);
+        Assert.Equal(green, gbWhite.G);
+        Assert.Equal(blue, gbWhite.B);
+    }
+
+    [Fact]
+    public void GBLight()
+    {
+        // Arrange
+        var alpha = 255;
+        var red = 134;
+        var green = 192;
+        var blue = 108;
+
+        // Act
+        var gbWhite = Colour.GBLight;
+
+        // Assert
+        Assert.Equal(alpha, gbWhite.A);
+        Assert.Equal(red, gbWhite.R);
+        Assert.Equal(green, gbWhite.G);
+        Assert.Equal(blue, gbWhite.B);
+    }
+
+    [Fact]
+    public void GBDark()
+    {
+        // Arrange
+        var alpha = 255;
+        var red = 48;
+        var green = 104;
+        var blue = 80;
+
+        // Act
+        var gbWhite = Colour.GBDark;
+
+        // Assert
+        Assert.Equal(alpha, gbWhite.A);
+        Assert.Equal(red, gbWhite.R);
+        Assert.Equal(green, gbWhite.G);
+        Assert.Equal(blue, gbWhite.B);
+    }
+
+    [Fact]
+    public void GBBlack()
+    {
+        // Arrange
+        var alpha = 255;
+        var red = 7;
+        var green = 24;
+        var blue = 33;
+
+        // Act
+        var gbWhite = Colour.GBBlack;
+
+        // Assert
+        Assert.Equal(alpha, gbWhite.A);
+        Assert.Equal(red, gbWhite.R);
+        Assert.Equal(green, gbWhite.G);
+        Assert.Equal(blue, gbWhite.B);
+    }
 }
