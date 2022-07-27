@@ -37,7 +37,6 @@ namespace GameboyColourDecolouriser.cli.Decolourise
             AnsiConsole.Progress()
             .Start(ctx =>
             {
-
                 // Define tasks
                 var loadingImage = ctx.AddTask("[green]Loading Image[/]");
                 var decolourStageOne = ctx.AddTask("[green]Decolouring Stage One[/]");
