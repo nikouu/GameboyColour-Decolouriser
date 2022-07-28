@@ -138,6 +138,12 @@ namespace GameboyColourDecolouriser
         {
             var tiles = recolouredImage.Tiles.ToIEnumerable().OrderByDescending(x => x.OriginalColourCount).ToList();
 
+            if (!tiles.Any(x => x.OriginalColours.Count == 4))
+            {
+                // no 4 colour tiles
+                return;
+            }
+
             var tileGroups = tiles.GroupBy(x => x.OriginalColourCount).ToList();
 
             foreach (var tileGroup in tileGroups)
