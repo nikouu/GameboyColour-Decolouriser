@@ -22,15 +22,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\Input\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\GameboyColourDecolouriser\GameboyColourDecolouriser.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Images\Input\1-colour-1-tile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Input\1-colour-2-tile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Images\Input\2-colour-1-tile.png">
@@ -42,7 +41,7 @@
     <None Update="Images\Input\4-colour-1-tile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Images\Input\5-colour-1-tile-export.png">
+    <None Update="Images\Input\5-colour-1-tile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Images\Input\bad-height.png">

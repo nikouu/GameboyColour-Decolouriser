@@ -11,13 +11,12 @@ namespace GameboyColourDecolouriser.UnitTests
     public class ImageConverterTests
     {
         [Fact]
-        public void ToGbcImage_LoadSimpleOneColourTile_TileIsLoaded()
+        public void ToGbcImage_LoadOneColourTile_TileIsLoaded()
         {
             // Arrange
             var gbcImage = ImageConverterImageSharp.ToGbcImage(@"./Images/Input/1-colour-1-tile.png");
 
             // Act
-
 
             // Assert
             Assert.Equal(8, gbcImage.Height);
@@ -26,7 +25,7 @@ namespace GameboyColourDecolouriser.UnitTests
         }
 
         [Fact]
-        public void ToGbcImage_LoadSimpleOneColourTile_CorrectColour()
+        public void ToGbcImage_LoadOneColourTile_CorrectColour()
         {
             // Arrange
             var gbcImage = ImageConverterImageSharp.ToGbcImage(@"./Images/Input/1-colour-1-tile.png");
@@ -38,6 +37,24 @@ namespace GameboyColourDecolouriser.UnitTests
             // Assert
             Assert.Contains(expectedColour, colours);
             Assert.Equal(1, colours.Count);
+        }
+
+        [Fact]
+        public void ToGbcImage_LoadTwoColourTile_CorrectColours()
+        {
+
+        }
+
+        [Fact]
+        public void ToGbcImage_LoadThreeColourTile_CorrectColours()
+        {
+
+        }
+
+        [Fact]
+        public void ToGbcImage_LoadFourColourTile_CorrectColours()
+        {
+
         }
 
         [Fact]
@@ -130,6 +147,37 @@ namespace GameboyColourDecolouriser.UnitTests
             Assert.Equal(Colour.FromRgb(222, 255, 222), colourMap[7, 5]);
             Assert.Equal(Colour.FromRgb(160, 136, 64), colourMap[7, 6]);
             Assert.Equal(Colour.FromRgb(200, 200, 0), colourMap[7, 7]);
+        }
+
+
+        [Fact]
+        public void ToGbcImage_LoadFiveColourTile_ThrowException()
+        {
+
+        }
+
+        [Fact]
+        public void ToGbcImage_LoadBadWidthTile_ThrowException()
+        {
+
+        }
+
+        [Fact]
+        public void ToGbcImage_LoadBadHeightTile_ThrowException()
+        {
+
+        }
+
+        [Fact]
+        public void ToGbcImage_LoadBadWidthAndHeightTile_ThrowException()
+        {
+
+        }
+
+        [Fact]
+        public void ToGbcImage_LoadTwoTiles_TilesAreLoaded()
+        {
+
         }
     }
 }
