@@ -1,4 +1,5 @@
 # Gameboy Colour Decolouriser
+![example workflow](https://github.com/nikouu/GameboyColour-Decolouriser/actions/workflows/action.yml/badge.svg)
 ✨Decolourises a Gameboy Color image into a GameBoy image✨ via looking at each tile and mapping the colour values to one of the 4 on a Gameboy.
 
 ![image](etc/gbctogb.jpeg)
