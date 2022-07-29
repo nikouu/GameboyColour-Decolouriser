@@ -7,6 +7,11 @@ namespace GameboyColourDecolouriser
     {
         private SpectreTasks? _spectreTasks;
 
+        // could return two things:
+        // the gb image
+        // and a palette map on info on how to colour the gbimage
+        // like it has a list of palettes, with IDs based on the minimal set of palettes you could have per image
+        // then it has an array of each tile and what palette is used ot colour it
         public GbImage Decolourise(GbcImage gbcImage, SpectreTasks? spectreTasks = null)
         {
             _spectreTasks = spectreTasks;

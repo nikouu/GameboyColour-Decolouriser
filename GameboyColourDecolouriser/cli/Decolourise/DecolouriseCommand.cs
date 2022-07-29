@@ -11,6 +11,7 @@ namespace GameboyColourDecolouriser.cli.Decolourise
         {
             var inputFile = parseResult.GetValueForArgument(DecolouriseCommandParser.InputFileArgument);
             var outputFile = parseResult.GetValueForArgument(DecolouriseCommandParser.OutputFileArgument);
+            var exportColourPalette = parseResult.GetValueForOption(DecolouriseCommandParser.ExportColourData);
 
             if (inputFile is null)
             {
@@ -32,7 +33,7 @@ namespace GameboyColourDecolouriser.cli.Decolourise
                 throw new FileNotFoundException($"Input file {inputFile.Name} does not exist.");
             }
 
-            Console.WriteLine($"Input file {inputFile.Name}, output file {outputFile.Name}");
+            Console.WriteLine($"Input file {inputFile.Name}, output file {outputFile.Name}, export colour data: {exportColourPalette}");
 
             AnsiConsole.Progress()
             .Start(ctx =>

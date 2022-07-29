@@ -16,6 +16,11 @@ namespace GameboyColourDecolouriser.cli.Decolourise
             Description = "The path of the output Gameboy image."
         };
 
+        public static readonly Option<bool> ExportColourData = new Option<bool>(name: "--export-colour-data")
+        {
+            Description = "Export colour palette information."
+        };
+
         private static readonly Command Command = ConstructCommand();
 
         public static Command GetCommand()
@@ -30,6 +35,7 @@ namespace GameboyColourDecolouriser.cli.Decolourise
 
             command.AddArgument(InputFileArgument);
             command.AddArgument(OutputFileArgument);
+            command.AddOption(ExportColourData);
 
             command.Handler = new ParseResultCommandHandler(DecolouriseCommand.Run);
 
