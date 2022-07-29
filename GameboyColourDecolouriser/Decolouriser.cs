@@ -36,19 +36,17 @@ namespace GameboyColourDecolouriser
                 .GroupBy(x => x.Key)
                 .ToDictionary(x => x.Key, y => y.GroupBy(x => x.Value).OrderByDescending(x => x.Key).First().First().Value);
 
-            var unfinishedTiles = recolouredImage.Tiles.ToIEnumerable().Where(x => !x.IsFullyRecoloured).ToList();
+            // relying on Deferred Execution, useful for chained together multiple queries that result in different manipulations of the dataset.
+            var unfinishedTiles = recolouredImage.Tiles.ToIEnumerable().Where(x => !x.IsFullyRecoloured);
+
             RecolourBasedOnTransparentTiles(unfinishedTiles);
-
-            unfinishedTiles = unfinishedTiles.Where(x => !x.IsFullyRecoloured).ToList();
             RecolourBasedOnExistingTileColours(mostUsedGbColoursPerRealColourDictionary, unfinishedTiles);
-
-            unfinishedTiles = unfinishedTiles.Where(x => !x.IsFullyRecoloured).ToList();
             RecolourBasedOnNearestSimilarColours(recolouredImage, unfinishedTiles);
 
             return recolouredImage.Tiles;
         }
 
-        private void RecolourBasedOnNearestSimilarColours(RecolouredImage recolouredImage, List<RecolouredTile> unfinishedTiles)
+        private void RecolourBasedOnNearestSimilarColours(RecolouredImage recolouredImage, IEnumerable<RecolouredTile> unfinishedTiles)
         {
             foreach (var unfinishedTile in unfinishedTiles)
             {
@@ -86,18 +84,18 @@ namespace GameboyColourDecolouriser
                         else
                         {
                             // pixel is good to go already
-                            _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count) * 100);
+                            _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count()) * 100);
                             continue;
                         }
                     }
                     UpdateImageDictionaryCaches(recolouredImage, unfinishedTile);
                 }
 
-                _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count) * 100);
+                _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count()) * 100);
             }
         }
 
-        private void RecolourBasedOnExistingTileColours(Dictionary<Colour, Colour> mostUsedGbColoursPerRealColourDictionary, List<RecolouredTile> unfinishedTiles)
+        private void RecolourBasedOnExistingTileColours(Dictionary<Colour, Colour> mostUsedGbColoursPerRealColourDictionary, IEnumerable<RecolouredTile> unfinishedTiles)
         {
             foreach (var unfinishedTile in unfinishedTiles)
             {
@@ -111,17 +109,17 @@ namespace GameboyColourDecolouriser
                     }
                 }
 
-                _spectreTasks?.decolourStageThree.Increment(((double)1 / unfinishedTiles.Count) * 100);
+                _spectreTasks?.decolourStageThree.Increment(((double)1 / unfinishedTiles.Count()) * 100);
             }
         }
 
-        private void RecolourBasedOnTransparentTiles(List<RecolouredTile> unfinishedTiles)
+        private void RecolourBasedOnTransparentTiles(IEnumerable<RecolouredTile> unfinishedTiles)
         {
             foreach (var unfinishedTile in unfinishedTiles)
             {
                 if (unfinishedTile.OriginalColourCount != 1)
                 {
-                    _spectreTasks?.decolourStageTwo.Increment(((double)1 / unfinishedTiles.Count) * 100);
+                    _spectreTasks?.decolourStageTwo.Increment(((double)1 / unfinishedTiles.Count()) * 100);
                     continue;
                 }
 
@@ -135,7 +133,7 @@ namespace GameboyColourDecolouriser
                     }
                 }
 
-                _spectreTasks?.decolourStageTwo.Increment(((double)1 / unfinishedTiles.Count) * 100);
+                _spectreTasks?.decolourStageTwo.Increment(((double)1 / unfinishedTiles.Count()) * 100);
             }
         }
 
