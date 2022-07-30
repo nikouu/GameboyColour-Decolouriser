@@ -61,38 +61,43 @@ namespace GameboyColourDecolouriser
                 }
                 else
                 {
-                    foreach (var ((i, j), colour) in unfinishedTile.ToIEnumerable())
-                    {
-                        var currentOriginalColour = unfinishedTile.OriginalTileColourMap[i, j];
-
-                        if (colour.IsDefault && (unfinishedTile.IsFullyRecoloured || unfinishedTile.ColourDictionaryCopy.ContainsKey(currentOriginalColour)))
-                        {
-                            // the colour has been found in a previous loop, and now its time to apply that colour to the remaining pixels
-                            unfinishedTile[i, j] = unfinishedTile.ColourDictionary(unfinishedTile.OriginalTileColourMap[i, j]);
-                        }
-                        else if (colour.IsDefault && !unfinishedTile.IsFullyRecoloured)
-                        {
-                            var remainingColourOptions = new List<Colour> { Colour.GBWhite, Colour.GBLight, Colour.GBDark, Colour.GBBlack }.Except(unfinishedTile.Colours).ToDictionary(x => x.GetBrightness(), z => z);
-
-                            var currentOriginalColourBrightness = currentOriginalColour.GetBrightness();
-
-                            var closest = remainingColourOptions.OrderBy(x => Math.Abs(currentOriginalColourBrightness - x.Key)).First();
-
-                            unfinishedTile[i, j] = closest.Value;
-                            // still more colours to find
-                        }
-                        else
-                        {
-                            // pixel is good to go already
-                            _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count()) * 100);
-                            continue;
-                        }
-                    }
-                    UpdateImageDictionaryCaches(recolouredImage, unfinishedTile);
+                    ProcessBasedOnBestNearestEstimate(recolouredImage, unfinishedTiles, unfinishedTile);
                 }
 
                 _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count()) * 100);
             }
+        }
+
+        private void ProcessBasedOnBestNearestEstimate(RecolouredImage recolouredImage, IEnumerable<RecolouredTile> unfinishedTiles, RecolouredTile unfinishedTile)
+        {
+            foreach (var ((i, j), colour) in unfinishedTile.ToIEnumerable())
+            {
+                var currentOriginalColour = unfinishedTile.OriginalTileColourMap[i, j];
+
+                if (colour.IsDefault && (unfinishedTile.IsFullyRecoloured || unfinishedTile.ColourDictionaryCopy.ContainsKey(currentOriginalColour)))
+                {
+                    // the colour has been found in a previous loop, and now its time to apply that colour to the remaining pixels
+                    unfinishedTile[i, j] = unfinishedTile.ColourDictionary(unfinishedTile.OriginalTileColourMap[i, j]);
+                }
+                else if (colour.IsDefault && !unfinishedTile.IsFullyRecoloured)
+                {
+                    var remainingColourOptions = new List<Colour> { Colour.GBWhite, Colour.GBLight, Colour.GBDark, Colour.GBBlack }.Except(unfinishedTile.Colours).ToDictionary(x => x.GetBrightness(), z => z);
+
+                    var currentOriginalColourBrightness = currentOriginalColour.GetBrightness();
+
+                    var closest = remainingColourOptions.OrderBy(x => Math.Abs(currentOriginalColourBrightness - x.Key)).First();
+
+                    unfinishedTile[i, j] = closest.Value;
+                    // still more colours to find
+                }
+                else
+                {
+                    // pixel is good to go already
+                    _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count()) * 100);
+                    continue;
+                }
+            }
+            UpdateImageDictionaryCaches(recolouredImage, unfinishedTile);
         }
 
         private void RecolourBasedOnExistingTileColours(Dictionary<Colour, Colour> mostUsedGbColoursPerRealColourDictionary, IEnumerable<RecolouredTile> unfinishedTiles)
