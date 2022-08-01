@@ -28,13 +28,7 @@ namespace GameboyColourDecolouriser
         private RecolouredTile[,] Process(RecolouredImage recolouredImage)
         {
             RecolourBasedOnFourColourTiles(recolouredImage);
-
-            // imagine actually writing this horror of a linq statement
-            var mostUsedGbColoursPerRealColourDictionary = recolouredImage.TileColourDictionary
-                .SelectMany(x => x.Value)
-                .OrderByDescending(x => x.Key.GetBrightness())
-                .GroupBy(x => x.Key)
-                .ToDictionary(x => x.Key, y => y.GroupBy(x => x.Value).OrderByDescending(x => x.Key).First().First().Value);
+            var mostUsedGbColoursPerRealColourDictionary = GetWeightedGbColoursByTrueColours(recolouredImage);
 
             // relying on Deferred Execution, useful for chained together multiple queries that result in different manipulations of the dataset.
             var unfinishedTiles = recolouredImage.Tiles.ToIEnumerable().Where(x => !x.IsFullyRecoloured);
@@ -44,6 +38,16 @@ namespace GameboyColourDecolouriser
             RecolourBasedOnNearestSimilarColours(recolouredImage, unfinishedTiles);
 
             return recolouredImage.Tiles;
+        }
+
+        private static Dictionary<Colour, Colour> GetWeightedGbColoursByTrueColours(RecolouredImage recolouredImage)
+        {
+            // imagine actually writing this horror of a linq statement
+            return recolouredImage.TileColourDictionary
+                .SelectMany(x => x.Value)
+                .OrderByDescending(x => x.Key.GetBrightness())
+                .GroupBy(x => x.Key)
+                .ToDictionary(x => x.Key, y => y.GroupBy(x => x.Value).OrderByDescending(x => x.Key).First().First().Value);
         }
 
         private void RecolourBasedOnNearestSimilarColours(RecolouredImage recolouredImage, IEnumerable<RecolouredTile> unfinishedTiles)
