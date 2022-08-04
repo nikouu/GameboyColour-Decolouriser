@@ -42,7 +42,7 @@ namespace GameboyColourDecolouriser.UnitTests
         [Fact]
         public void ToGbcImage_LoadTwoColourTile_CorrectColours()
         {
-
+            
         }
 
         [Fact]
@@ -153,13 +153,19 @@ namespace GameboyColourDecolouriser.UnitTests
         [Fact]
         public void ToGbcImage_LoadFiveColourTile_ThrowException()
         {
+            // Arrange
+            var act = () => ImageConverterImageSharp.ToGbcImage(@"./Images/Input/5-colour-1-tile.png");
 
+            // Act
+
+            // Assert
+            Assert.Throws<InvalidOperationException>(act);
         }
 
         [Fact]
         public void ToGbcImage_LoadBadWidthTile_ThrowException()
         {
-
+            
         }
 
         [Fact]
