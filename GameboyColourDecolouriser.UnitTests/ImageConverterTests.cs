@@ -165,7 +165,13 @@ namespace GameboyColourDecolouriser.UnitTests
         [Fact]
         public void ToGbcImage_LoadBadWidthTile_ThrowException()
         {
-            
+            // Arrange
+            var act = () => ImageConverterImageSharp.ToGbcImage(@"./Images/Input/bad-width.png");
+
+            // Act
+
+            // Assert
+            Assert.Throws<ArgumentException>(act);
         }
 
         [Fact]
