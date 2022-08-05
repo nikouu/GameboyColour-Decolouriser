@@ -177,7 +177,13 @@ namespace GameboyColourDecolouriser.UnitTests
         [Fact]
         public void ToGbcImage_LoadBadHeightTile_ThrowException()
         {
+            // Arrange
+            var act = () => ImageConverterImageSharp.ToGbcImage(@"./Images/Input/bad-height.png");
 
+            // Act
+
+            // Assert
+            Assert.Throws<ArgumentException>(act);
         }
 
         [Fact]
