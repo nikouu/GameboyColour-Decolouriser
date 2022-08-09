@@ -201,7 +201,15 @@ namespace GameboyColourDecolouriser.UnitTests
         [Fact]
         public void ToGbcImage_LoadTwoTiles_TilesAreLoaded()
         {
+            // Arrange
+            var gbcImage = ImageConverterImageSharp.ToGbcImage(@"./Images/Input/1-colour-2-tile.png");
 
+            // Act
+
+            // Assert
+            Assert.Equal(8, gbcImage.Height);
+            Assert.Equal(16, gbcImage.Width);
+            Assert.Equal(2, gbcImage.Tiles.Length);
         }
     }
 }
