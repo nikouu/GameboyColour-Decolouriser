@@ -21,8 +21,12 @@ namespace GameboyColourDecolouriser.cli.Decolourise
             Description = "Export colour palette information."
         };
 
+        // part of the singleton pattern. static here because then there will always be just one instance of the instance property
+        // when called for the first time it is instntiated and that's the only one
+        // this is the private backing property that stores the instance
         private static readonly Command Command = ConstructCommand();
 
+        // the only way we can get to the private backing instance
         public static Command GetCommand()
         {
             return Command;
