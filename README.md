@@ -19,6 +19,9 @@ Feel free to grab the latest from [releases](https://github.com/nikouu/GameboyCo
 ### Synopsis
 `GameboyColourDecolouriser [command] [options]`
 
+### Pro Tip!
+Make sure you have all the tiles/images/the whole map in a single image before recolouring. Or in another way, if you had two halves of your map and ran them through this separately, the colours may not be what you expect because it needs the whole image to do some of the estimates.
+
 ### Options
 `-?, -h, --help`
 Show help and usage information
