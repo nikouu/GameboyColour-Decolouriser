@@ -183,7 +183,7 @@ Along with my TinyWordle project, this post "[REAL Single File Publish/Build for
 - Originally each tile just had it's colours ordered brightest to darkest and using the C# LINQ `.Zip()` call to try to marry them up.
 - There was also fiddly mapping of the black and white colours to try to reduce the problem space.
 - Ultimately my main problem was tiles of single colours that weren't present elsewhere. 
-- Below is the result of an early algorithm idea which due to guesswork by brightnesses lead to weird situations with roofing. 
+- Below is the result of an early algorithm idea which due to guesswork by brightness lead to weird situations with roofing. 
 
 ![image](etc/mokkiarea-oldalgorithm.png)
 
