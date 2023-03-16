@@ -8,7 +8,7 @@ namespace GameboyColourDecolouriser
         private readonly Tile _originalTile;
         private readonly Colour[,] _gbColourMap;
         private readonly HashSet<Colour> _gbColours = new();
-        // key is original colour
+        // key is original colour and it maps to a GB colour
         private readonly Dictionary<Colour, Colour> _colourDictionary = new();
         private Lazy<int> _originalColourCount;
         private readonly Lazy<int> _originalTileHash;
