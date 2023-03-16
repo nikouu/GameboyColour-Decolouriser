@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameboyColourDecolouriser",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameboyColourDecolouriser.UnitTests", "GameboyColourDecolouriser.UnitTests\GameboyColourDecolouriser.UnitTests.csproj", "{EB22AF2F-C05D-42D3-84BE-A90E0D2B2954}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameboyColourDecolouriser.Cli", "GameboyColourDecolouriser.Cli\GameboyColourDecolouriser.Cli.csproj", "{CC4710DA-DFB0-4A9F-9E28-B55B6631D88E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EB22AF2F-C05D-42D3-84BE-A90E0D2B2954}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB22AF2F-C05D-42D3-84BE-A90E0D2B2954}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB22AF2F-C05D-42D3-84BE-A90E0D2B2954}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC4710DA-DFB0-4A9F-9E28-B55B6631D88E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC4710DA-DFB0-4A9F-9E28-B55B6631D88E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC4710DA-DFB0-4A9F-9E28-B55B6631D88E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC4710DA-DFB0-4A9F-9E28-B55B6631D88E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

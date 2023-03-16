@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "GameboyColourDecolouriser": {
-      "commandName": "Project",
-      "commandLineArgs": "Decolourise \"C:\\Users\\Niko Uusitalo\\Documents\\GitHub\\GameboyColour-Decolouriser\\etc\\mokkiarea-truecolour.png\" \"C:\\Users\\Niko Uusitalo\\Documents\\GitHub\\GameboyColour-Decolouriser\\outputs\\ayylmao2.png\" --export-colour-data true"
-    }
-  }
-}
