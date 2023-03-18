@@ -1,4 +1,5 @@
 ﻿using GameboyColourDecolouriser.Models;
+using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,55 @@ namespace GameboyColourDecolouriser
         public ColourTranslator()
         {
 
+        }
+
+        public void UpdateTranslation(Colour gbcColour, Colour gbColour)
+        {
+            if (gbColour == Colour.GBWhite && _GBCWhite.IsDefault)
+            {
+                _GBCWhite = gbcColour;
+            }
+            else if (gbColour == Colour.GBLight && _GBCLight.IsDefault)
+            {
+                _GBCLight = gbcColour;
+            }
+            else if (gbColour == Colour.GBDark && _GBCDark.IsDefault)
+            {
+                _GBCDark = gbcColour;
+            }
+            else if (gbColour == Colour.GBBlack && _GBCBlack.IsDefault)
+            {
+                _GBCBlack = gbcColour;
+            }
+            else
+            {
+                throw new Exception("Unable to update translations. Either colour has already been written, or gbColour not found.");
+            }
+        }
+
+        public bool IsTranslated(Colour gbcColour)
+        {
+            // remove duplication from GetGBColour
+            if (gbcColour == _GBCWhite)
+            {
+                return true;
+            }
+            else if (gbcColour == _GBCLight)
+            {
+                return true;
+            }
+            else if (gbcColour == _GBCDark)
+            {
+                return true;
+            }
+            else if (gbcColour == _GBCBlack)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public Colour GetGBColour(Colour gbcColour)
@@ -72,6 +122,32 @@ namespace GameboyColourDecolouriser
             }
         }
 
+        public Dictionary<Colour, Colour> ToDictionary()
+        {
+            var colourDictionary = new Dictionary<Colour, Colour>();
+            if (!_GBCWhite.IsDefault)
+            {
+                colourDictionary.Add(_GBCWhite, Colour.GBWhite);
+            }
+
+            if (!_GBCLight.IsDefault)
+            {
+                colourDictionary.Add(_GBCLight, Colour.GBLight);
+            }
+
+            if (!_GBCDark.IsDefault)
+            {
+                colourDictionary.Add(_GBCDark, Colour.GBDark);
+            }
+
+            if (!_GBCBlack.IsDefault)
+            {
+                colourDictionary.Add(_GBCBlack, Colour.GBBlack);
+            }
+
+            return colourDictionary;
+        }
+
         public bool Equals(ColourTranslator? other)
         {
             if (GBCWhite != other.GBCWhite)
@@ -95,6 +171,11 @@ namespace GameboyColourDecolouriser
             }
 
             return true;
+        }
+
+        public HashSet<Colour> ToGBCHashSet()
+        {
+            return new HashSet<Colour>(ToDictionary().Keys);
         }
 
         public override bool Equals(object obj)
