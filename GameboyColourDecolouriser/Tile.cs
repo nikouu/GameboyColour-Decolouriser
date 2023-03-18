@@ -23,7 +23,7 @@ namespace GameboyColourDecolouriser
             _x = x; 
             _y = y;
             _colours = new HashSet<Colour>();
-            _hash = new Lazy<int>(() => GenerateHash()); // hm, this should be ensured to only be called after a load
+            _hash = new Lazy<int>(GenerateHash); // hm, this should be ensured to only be called after a load
 
             foreach (var ((i, j), colour) in _colourMap.ToIEnumerableWithCoords())
             {

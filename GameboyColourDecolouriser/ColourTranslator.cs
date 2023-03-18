@@ -1,6 +1,7 @@
 ﻿using GameboyColourDecolouriser.Models;
 using Spectre.Console;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace GameboyColourDecolouriser
         private Colour _GBCLight;
         private Colour _GBCDark;
         private Colour _GBCBlack;
+        private Dictionary<Colour, Colour> _dictionary = new Dictionary<Colour, Colour>();
 
         public Colour GBCWhite => _GBCWhite;
         public Colour GBCLight => _GBCLight;
@@ -30,18 +32,22 @@ namespace GameboyColourDecolouriser
             if (gbColour == Colour.GBWhite)
             {
                 _GBCWhite = gbcColour;
+                _dictionary.Add(_GBCWhite, Colour.GBWhite);
             }
             else if (gbColour == Colour.GBLight)
             {
                 _GBCLight = gbcColour;
+                _dictionary.Add(_GBCLight, Colour.GBLight);
             }
             else if (gbColour == Colour.GBDark)
             {
                 _GBCDark = gbcColour;
+                _dictionary.Add(_GBCDark, Colour.GBDark);
             }
             else if (gbColour == Colour.GBBlack)
             {
                 _GBCBlack = gbcColour;
+                _dictionary.Add(_GBCBlack, Colour.GBBlack);
             }
             else
             {
@@ -124,28 +130,29 @@ namespace GameboyColourDecolouriser
 
         public Dictionary<Colour, Colour> ToDictionary()
         {
-            var colourDictionary = new Dictionary<Colour, Colour>();
-            if (!_GBCWhite.IsDefault)
-            {
-                colourDictionary.Add(_GBCWhite, Colour.GBWhite);
-            }
+            //var colourDictionary = new Dictionary<Colour, Colour>();
+            //if (!_GBCWhite.IsDefault)
+            //{
+            //    colourDictionary.Add(_GBCWhite, Colour.GBWhite);
+            //}
 
-            if (!_GBCLight.IsDefault)
-            {
-                colourDictionary.Add(_GBCLight, Colour.GBLight);
-            }
+            //if (!_GBCLight.IsDefault)
+            //{
+            //    colourDictionary.Add(_GBCLight, Colour.GBLight);
+            //}
 
-            if (!_GBCDark.IsDefault)
-            {
-                colourDictionary.Add(_GBCDark, Colour.GBDark);
-            }
+            //if (!_GBCDark.IsDefault)
+            //{
+            //    colourDictionary.Add(_GBCDark, Colour.GBDark);
+            //}
 
-            if (!_GBCBlack.IsDefault)
-            {
-                colourDictionary.Add(_GBCBlack, Colour.GBBlack);
-            }
+            //if (!_GBCBlack.IsDefault)
+            //{
+            //    colourDictionary.Add(_GBCBlack, Colour.GBBlack);
+            //}
 
-            return colourDictionary;
+            //return colourDictionary;
+            return _dictionary;
         }
 
         public bool Equals(ColourTranslator? other)

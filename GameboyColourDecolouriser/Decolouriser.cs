@@ -91,6 +91,7 @@ namespace GameboyColourDecolouriser
             }
         }
 
+        // Goes through each pixel in a tile to make the best guess on what that pixel could be
         private void ProcessBasedOnBestNearestEstimate(RecolouredImage recolouredImage, IEnumerable<DecolouredTile> unfinishedTiles, DecolouredTile unfinishedTile)
         {
             // remember, colour here is what is on the /unfinished/ tile we are creating with GB colours, so it will have missing colours at first

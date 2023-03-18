@@ -1,4 +1,5 @@
 ﻿using GameboyColourDecolouriser.Models;
+using SixLabors.ImageSharp;
 using System.Text;
 
 namespace GameboyColourDecolouriser
@@ -96,7 +97,25 @@ namespace GameboyColourDecolouriser
             }
         }
 
-        public HashSet<Colour> Colours => _colourTranslator.ToGBHashSet();
+        private int _alreadyTranslatedColourCount = -1;
+        private HashSet<Colour> _gbHashSet;
+        public HashSet<Colour> Colours
+        {
+            get
+            {
+                if (_alreadyTranslatedColourCount == GBCColourCount)
+                {
+                    return _gbHashSet;
+                }
+                else
+                {
+                    var gbHashSet = _colourTranslator.ToGBHashSet();
+                    _alreadyTranslatedColourCount = gbHashSet.Count;
+                    _gbHashSet = gbHashSet;
+                    return gbHashSet;
+                }
+            }
+        }
 
         public string GenerateColourKeyString()
         {
