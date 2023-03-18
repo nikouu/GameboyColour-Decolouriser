@@ -1,7 +1,7 @@
 ﻿namespace GameboyColourDecolouriser.Models;
 
 // A trimmed version of the System.Drawing Color object
-public readonly struct Colour : IEquatable<Colour>
+public readonly struct Colour : IEquatable<Colour>, IComparable<Colour>
 {
     public static Colour GBWhite => FromRgb(224, 248, 207);
     public static Colour GBLight => FromRgb(134, 192, 108);
@@ -69,7 +69,7 @@ public readonly struct Colour : IEquatable<Colour>
     public string ToHexString => $"#{R:X2}{G:X2}{B:X2}";
 
     // RGB(R, G, B)
-    public string ToRgbString => $"RGB({R}, {G}, {B})";
+    public string RgbString => $"RGB({R}, {G}, {B})";
 
     // #RRGGBBAA
     public string ToHexaString => $"#{R:X2}{G:X2}{B:X2}{A:X2}";
@@ -77,7 +77,7 @@ public readonly struct Colour : IEquatable<Colour>
     public double ToProportion(byte b) => b / (double)Byte.MaxValue;
 
     // RGBA(R, G, B, A)
-    public string ToRgbaString => $"RGBA({ToProportion(A):N2}, {R}, {G}, {B})";
+    public string ToRgbaString => $"RGBA({R}, {G}, {B},{ToProportion(A):N2})";
 
     private static void CheckByte(int value, string name)
     {
@@ -102,4 +102,9 @@ public readonly struct Colour : IEquatable<Colour>
     public override string ToString() => ToRgbaString;
 
     public override int GetHashCode() => value.GetHashCode();
+
+    public int CompareTo(Colour other)
+    {
+        throw new NotImplementedException();
+    }
 }

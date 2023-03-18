@@ -11,13 +11,17 @@ namespace GameboyColourDecolouriser
         private Lazy<int> _gbcColourCount;
         private readonly Lazy<int> _originalTileHash;
         private Lazy<string> _colourKeyString;
+        private bool _isFullyRecoloured = false;
+        private Lazy<HashSet<Colour>> _gbcColours;
+        private Lazy<HashSet<Colour>> _colours;
+
 
         public int ColourHash => 0;
 
         // these are the gbc colours we have processed so far. so should this be under "colours" because that doesnt represent the colours of the decoloured tile...
-        public HashSet<Colour> Colours => _colourTranslator.ToGBCHashSet();
+        //public HashSet<Colour> Colours => _colourTranslator.ToGBCHashSet();
 
-        public HashSet<Colour> TranslatedColours => _colourTranslator.ToGBCHashSet();
+        //public HashSet<Colour> TranslatedColours => _colourTranslator.ToGBCHashSet();
 
         public Colour[,] ColourMap => _gbColourMap;
         public HashSet<Colour> GBCColours => _gbcTile.Colours;
@@ -26,7 +30,25 @@ namespace GameboyColourDecolouriser
         public int X => _gbcTile.X;
         public int Y => _gbcTile.Y;
         public int OriginalTileHash => _originalTileHash.Value;
-        public bool IsFullyRecoloured => GBCColourCount == Colours.Count;
+        public bool IsFullyRecoloured
+        {
+            get
+            {
+                if (_isFullyRecoloured)
+                {
+                    return _isFullyRecoloured;
+                }
+                else if (GBCColourCount == Colours.Count)
+                {
+                    _isFullyRecoloured = true;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
         public Colour GetGBColour(Colour gbColour) => _colourTranslator.GetGBColour(gbColour);
         public bool IsColourTranslated(Colour gbcColour) => _colourTranslator.IsTranslated(gbcColour);
         public Dictionary<Colour, Colour> GetTranslatedDictionary => _colourTranslator.ToDictionary();
@@ -37,8 +59,11 @@ namespace GameboyColourDecolouriser
             _gbcTile = (Tile)originalTile;
             _gbColourMap = new Colour[8, 8];
 
+            // these are the mapped colours
+            _colours = new Lazy<HashSet<Colour>>(_colourTranslator.ToGBCHashSet());
+            _gbcColours = new Lazy<HashSet<Colour>>(_gbcTile.Colours);
             _gbcColourCount = new Lazy<int>(() => _gbcTile.Colours.Count);
-            _colourKeyString = new Lazy<string>(GenerateColourKeyString);
+            _colourKeyString = new Lazy<string>(() => GenerateColourKeyString());
             _originalTileHash = new Lazy<int>(() => _gbcTile.ColourHash);
         }
 
@@ -59,16 +84,21 @@ namespace GameboyColourDecolouriser
         {
             get
             {
+                return _colourKeyString.Value;
                 if (_colourKeyString.IsValueCreated || IsFullyRecoloured)
                 {
                     return _colourKeyString.Value;
                 }
                 else
                 {
-                    return "";
+                    throw new Exception("No ColourKeyString");
                 }
             }
         }
+
+        public HashSet<Colour> Colours => _colourTranslator.ToGBCHashSet();
+
+        public HashSet<Colour> GbColours => _colourTranslator.ToGBHashSet();
 
         public string GenerateColourKeyString()
         {

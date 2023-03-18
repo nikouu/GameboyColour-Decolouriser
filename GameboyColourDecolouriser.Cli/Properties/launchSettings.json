@@ -2,7 +2,7 @@
   "profiles": {
     "GameboyColourDecolouriser": {
       "commandName": "Project",
-      "commandLineArgs": "Decolourise \"C:\\Users\\Niko Uusitalo\\Documents\\GitHub\\Little-Mokki-In-The-Woods\\LittleMokkiInTheWoods\\assets\\backgrounds\\Original.png\" \"C:\\Users\\Niko Uusitalo\\Documents\\GitHub\\Little-Mokki-In-The-Woods\\LittleMokkiInTheWoods\\assets\\backgrounds\\Original_gb.png\" --export-colour-data true"
+      "commandLineArgs": "Decolourise \"C:\\Users\\Niko Uusitalo\\Documents\\GitHub\\Little-Mokki-In-The-Woods\\LittleMokkiInTheWoods\\assets\\backgrounds\\Mokki-area-export.png\" \"C:\\Users\\Niko Uusitalo\\Documents\\GitHub\\Little-Mokki-In-The-Woods\\LittleMokkiInTheWoods\\assets\\backgrounds\\Mokki-area-export_gb.png\" --export-colour-data true"
     }
   }
 }

@@ -27,19 +27,19 @@ namespace GameboyColourDecolouriser
 
         public void UpdateTranslation(Colour gbcColour, Colour gbColour)
         {
-            if (gbColour == Colour.GBWhite && _GBCWhite.IsDefault)
+            if (gbColour == Colour.GBWhite)
             {
                 _GBCWhite = gbcColour;
             }
-            else if (gbColour == Colour.GBLight && _GBCLight.IsDefault)
+            else if (gbColour == Colour.GBLight)
             {
                 _GBCLight = gbcColour;
             }
-            else if (gbColour == Colour.GBDark && _GBCDark.IsDefault)
+            else if (gbColour == Colour.GBDark)
             {
                 _GBCDark = gbcColour;
             }
-            else if (gbColour == Colour.GBBlack && _GBCBlack.IsDefault)
+            else if (gbColour == Colour.GBBlack)
             {
                 _GBCBlack = gbcColour;
             }
@@ -52,19 +52,19 @@ namespace GameboyColourDecolouriser
         public bool IsTranslated(Colour gbcColour)
         {
             // remove duplication from GetGBColour
-            if (gbcColour == _GBCWhite)
+            if (gbcColour == _GBCWhite && !_GBCWhite.IsDefault)
             {
                 return true;
             }
-            else if (gbcColour == _GBCLight)
+            else if (gbcColour == _GBCLight && !_GBCLight.IsDefault)
             {
                 return true;
             }
-            else if (gbcColour == _GBCDark)
+            else if (gbcColour == _GBCDark && !_GBCDark.IsDefault)
             {
                 return true;
             }
-            else if (gbcColour == _GBCBlack)
+            else if (gbcColour == _GBCBlack && !_GBCBlack.IsDefault)
             {
                 return true;
             }
@@ -176,6 +176,11 @@ namespace GameboyColourDecolouriser
         public HashSet<Colour> ToGBCHashSet()
         {
             return new HashSet<Colour>(ToDictionary().Keys);
+        }
+
+        public HashSet<Colour> ToGBHashSet()
+        {
+            return new HashSet<Colour>(ToDictionary().Values);
         }
 
         public override bool Equals(object obj)
