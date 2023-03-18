@@ -416,5 +416,33 @@ namespace GameboyColourDecolouriser.UnitTests
             Assert.Equal(Colour.FromRgb(48, 104, 80), colourMap[7, 6]);
             Assert.Equal(Colour.FromRgb(134, 192, 108), colourMap[7, 7]);
         }
+
+        [Fact]
+        public void Decolourise_MultipleTileImage_NoException()
+        {
+            // Arrange
+            var gbcImage = ImageConverterImageSharp.ToGbcImage(@"./Images/Input/mokki1.png");
+            var decolouriser = new Decolouriser();
+
+            // Act
+            var exception = Record.Exception(() => decolouriser.Decolourise(gbcImage));
+
+            // Assert
+            Assert.Null(exception);
+        }
+
+        [Fact]
+        public void Decolourise_MultipleTileImageWithBlank_NoException()
+        {
+            // Arrange
+            var gbcImage = ImageConverterImageSharp.ToGbcImage(@"./Images/Input/mokki2.png");
+            var decolouriser = new Decolouriser();
+
+            // Act
+            var exception = Record.Exception(() => decolouriser.Decolourise(gbcImage));
+
+            // Assert
+            Assert.Null(exception);
+        }        
     }
 }
