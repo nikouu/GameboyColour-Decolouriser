@@ -30,7 +30,7 @@ namespace GameboyColourDecolouriser.UnitTests
             var gbImage = decolouriser.Decolourise(gbcImage);
 
             // Assert
-            Assert.Single(gbImage.Tiles[0, 0].TranslatedColours);
+            Assert.Single(gbImage.Tiles[0, 0].Colours);
         }
 
         [Fact]
