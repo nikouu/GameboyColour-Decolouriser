@@ -96,9 +96,7 @@ namespace GameboyColourDecolouriser
             }
         }
 
-        public HashSet<Colour> Colours => _colourTranslator.ToGBCHashSet();
-
-        public HashSet<Colour> GbColours => _colourTranslator.ToGBHashSet();
+        public HashSet<Colour> Colours => _colourTranslator.ToGBHashSet();
 
         public string GenerateColourKeyString()
         {

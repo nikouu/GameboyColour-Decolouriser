@@ -105,7 +105,7 @@ namespace GameboyColourDecolouriser
                 }
                 else if (colour.IsDefault && !unfinishedTile.IsFullyRecoloured)
                 {
-                    var remainingColourOptions = new List<Colour> { Colour.GBWhite, Colour.GBLight, Colour.GBDark, Colour.GBBlack }.Except(unfinishedTile.GbColours).ToDictionary(x => x.GetBrightness(), z => z);
+                    var remainingColourOptions = new List<Colour> { Colour.GBWhite, Colour.GBLight, Colour.GBDark, Colour.GBBlack }.Except(unfinishedTile.Colours).ToDictionary(x => x.GetBrightness(), z => z);
 
                     var currentOriginalColourBrightness = currentOriginalColour.GetBrightness();
 
