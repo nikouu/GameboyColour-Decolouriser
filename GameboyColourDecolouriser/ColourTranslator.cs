@@ -27,6 +27,14 @@ namespace GameboyColourDecolouriser
 
         }
 
+        public ColourTranslator(Dictionary<Colour, Colour> dictionary)
+        {
+            foreach (var (gbcColour, gbColour) in dictionary)
+            {
+                UpdateTranslation(gbcColour, gbColour);
+            }
+        }
+
         public void UpdateTranslation(Colour gbcColour, Colour gbColour)
         {
             if (gbColour == Colour.GBWhite)
