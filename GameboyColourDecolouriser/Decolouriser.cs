@@ -2,6 +2,9 @@
 
 namespace GameboyColourDecolouriser
 {
+    /// <summary>
+    /// Contains logic to decolourise a <seealso cref="GbcImage"/> to a <seealso cref="GbImage"/>.
+    /// </summary>
     public class Decolouriser
     {
         private SpectreTasks? _spectreTasks;
@@ -14,7 +17,7 @@ namespace GameboyColourDecolouriser
         /// <returns>A decoloured <seealso cref="GbImage"/>.</returns>
         public GbImage Decolourise(GbcImage gbcImage, SpectreTasks? spectreTasks = null)
         {
-            _spectreTasks = spectreTasks;            
+            _spectreTasks = spectreTasks;
 
             var decolouredTiles = Process(gbcImage);
 
@@ -95,8 +98,11 @@ namespace GameboyColourDecolouriser
                     {
                         if (tileGroups.Any(x => x.Key == tileGroup.Key + 1))
                         {
-                            // Attempt to process the current tile with any tile that +1 colour in it - this tile might be an exact subset of one of them.
-                            ProcessFromSimilarMoreColouredTiles(tile, tileGroups.Where(x => x.Key == tileGroup.Key + 1).First());
+                            // todo: can this where have another where which only does completed tiles? or do we also rely on incompleted tiles for this?
+                            var compareToTiles = tileGroups.Where(x => x.Key == tileGroup.Key + 1).First().Where(x => x.IsFullyDecoloured);
+
+                            // Attempt to process the current tile with any tile that +1 colour in it - this tile might be an exact subset of one of them.                            
+                            ProcessFromSimilarMoreColouredTiles(tile, compareToTiles);
                         }
 
                         if (tile.Colours.Count == 0)
@@ -187,7 +193,11 @@ namespace GameboyColourDecolouriser
             }
         }
 
-
+        /// <summary>
+        /// Attempt to colour any remaining unfinished tiles by looking at all existing coloured tiles, and if not, make a best estimate.
+        /// </summary>
+        /// <param name="decolouredImage">The decoloured image so far.</param>
+        /// <param name="unfinishedTiles">Remaining unfinished tiles.</param>
         private void DecolourBasedOnNearestSimilarColours(DecolouredImage decolouredImage, IEnumerable<DecolouredTile> unfinishedTiles)
         {
             foreach (var unfinishedTile in unfinishedTiles)
@@ -214,7 +224,12 @@ namespace GameboyColourDecolouriser
             }
         }
 
-        // Goes through each pixel in a tile to make the best guess on what that pixel could be
+        /// <summary>
+        /// Goes through each pixel in a tile to make the best guess on what that pixel could be.
+        /// </summary>
+        /// <param name="decolouredImage"></param>
+        /// <param name="unfinishedTiles"></param>
+        /// <param name="unfinishedTile"></param>
         private void ProcessBasedOnBestNearestEstimate(DecolouredImage decolouredImage, IEnumerable<DecolouredTile> unfinishedTiles, DecolouredTile unfinishedTile)
         {
             // remember, colour here is what is on the /unfinished/ tile we are creating with GB colours, so it will have missing colours at first
@@ -263,7 +278,7 @@ namespace GameboyColourDecolouriser
             decolouredImage.TileDictionary.TryAdd(tile.OriginalTileHash, tile.ColourKeyString);
 
             // for this translated dictionary, we have a unique key, and the mappings for GBC to GB colours associated with it
-            decolouredImage.TileColourDictionary.TryAdd(tile.ColourKeyString, tile.GetTranslatedDictionary);          
+            decolouredImage.TileColourDictionary.TryAdd(tile.ColourKeyString, tile.GetTranslatedDictionary);
         }
 
         // we have seen the identical tile before, so we know how to process it
@@ -285,7 +300,6 @@ namespace GameboyColourDecolouriser
         private void ProcessFromSimilarMoreColouredTiles(DecolouredTile decolouredTile, IEnumerable<DecolouredTile> tiles)
         {
             // go through the decolouredImage object to find something that has the same colours.      
-
             foreach (var tile in tiles)
             {
                 if (tile.GBCColourCount == tile.Colours.Count && tile.GBCColours.ContainsAll(decolouredTile.GBCColours))
