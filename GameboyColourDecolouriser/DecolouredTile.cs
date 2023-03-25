@@ -37,15 +37,11 @@ namespace GameboyColourDecolouriser
         /// A <seealso cref="T:Colour[,]"/> being each of the 64 pixels in the 8x8 pixel tile from the original colour image.
         /// </summary>
         public Colour[,] OriginalTileColourMap => _gbcTile.ColourMap;
-        
-        /// <summary>
-        /// X coordinate of this tile in the greater image.
-        /// </summary>
+
+        /// <inheritdoc/>
         public int X => _gbcTile.X;
 
-        /// <summary>
-        /// Y coordinate of this tile in the greater image.
-        /// </summary>
+        /// <inheritdoc/>
         public int Y => _gbcTile.Y;
 
         /// <summary>
@@ -97,12 +93,7 @@ namespace GameboyColourDecolouriser
             _originalTileHash = new Lazy<int>(() => _gbcTile.ColourHash);
         }
 
-        /// <summary>
-        /// Gets or sets a <seealso cref="Colour"/> pixel associated with a specific x and y coordinate in the <seealso cref="DecolouredTile"/>.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns>The <seealso cref="Colour"/> for the pixel.</returns>
+        /// <inheritdoc/>
         public Colour this[int x, int y]
         {
             get => _gbColourMap[x, y];
