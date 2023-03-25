@@ -12,9 +12,6 @@ namespace GameboyColourDecolouriser
         private readonly Lazy<int> _originalTileHash;
         private Lazy<string> _colourKeyString;
         private bool _isFullyDecoloured = false;
-        private Lazy<HashSet<Colour>> _gbcColours;
-        private Lazy<HashSet<Colour>> _colours;
-
 
         public int ColourHash => 0;
 
@@ -60,8 +57,6 @@ namespace GameboyColourDecolouriser
             _gbColourMap = new Colour[8, 8];
 
             // these are the mapped colours
-            _colours = new Lazy<HashSet<Colour>>(_colourTranslator.ToGBCHashSet());
-            _gbcColours = new Lazy<HashSet<Colour>>(_gbcTile.Colours);
             _gbcColourCount = new Lazy<int>(() => _gbcTile.Colours.Count);
             _colourKeyString = new Lazy<string>(() => GenerateColourKeyString());
             _originalTileHash = new Lazy<int>(() => _gbcTile.ColourHash);

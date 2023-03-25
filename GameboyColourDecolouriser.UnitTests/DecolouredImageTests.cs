@@ -1,6 +1,6 @@
 ﻿namespace GameboyColourDecolouriser.UnitTests
 {
-    internal class RecolouredImageTests
+    internal class DecolouredImageTests
     {
     }
 }

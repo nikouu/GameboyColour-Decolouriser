@@ -8,7 +8,7 @@ namespace GameboyColourDecolouriser
         private Colour _GBCLight;
         private Colour _GBCDark;
         private Colour _GBCBlack;
-        private Dictionary<Colour, Colour> _dictionary = new Dictionary<Colour, Colour>();
+        private readonly Dictionary<Colour, Colour> _dictionary = new();
 
         public Colour GBCWhite => _GBCWhite;
         public Colour GBCLight => _GBCLight;
@@ -129,32 +129,7 @@ namespace GameboyColourDecolouriser
             }
         }
 
-        public Dictionary<Colour, Colour> ToDictionary()
-        {
-            //var colourDictionary = new Dictionary<Colour, Colour>();
-            //if (!_GBCWhite.IsDefault)
-            //{
-            //    colourDictionary.Add(_GBCWhite, Colour.GBWhite);
-            //}
-
-            //if (!_GBCLight.IsDefault)
-            //{
-            //    colourDictionary.Add(_GBCLight, Colour.GBLight);
-            //}
-
-            //if (!_GBCDark.IsDefault)
-            //{
-            //    colourDictionary.Add(_GBCDark, Colour.GBDark);
-            //}
-
-            //if (!_GBCBlack.IsDefault)
-            //{
-            //    colourDictionary.Add(_GBCBlack, Colour.GBBlack);
-            //}
-
-            //return colourDictionary;
-            return _dictionary;
-        }
+        public Dictionary<Colour, Colour> ToDictionary() => new(_dictionary);
 
         public bool Equals(ColourTranslator? other)
         {
@@ -183,12 +158,12 @@ namespace GameboyColourDecolouriser
 
         public HashSet<Colour> ToGBCHashSet()
         {
-            return new HashSet<Colour>(ToDictionary().Keys);
+            return new HashSet<Colour>(_dictionary.Keys);
         }
 
         public HashSet<Colour> ToGBHashSet()
         {
-            return new HashSet<Colour>(ToDictionary().Values);
+            return new HashSet<Colour>(_dictionary.Values);
         }
 
         public override bool Equals(object obj)
