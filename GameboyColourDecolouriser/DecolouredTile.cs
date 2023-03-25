@@ -27,6 +27,7 @@ namespace GameboyColourDecolouriser
         public int X => _gbcTile.X;
         public int Y => _gbcTile.Y;
         public int OriginalTileHash => _originalTileHash.Value;
+        public string ColourKeyString => _colourKeyString.Value;
         public bool IsFullyDecoloured
         {
             get
@@ -71,22 +72,6 @@ namespace GameboyColourDecolouriser
                 if (!_colourTranslator.IsTranslated(_gbcTile[x, y]))
                 {
                     _colourTranslator.UpdateTranslation(_gbcTile[x, y], value);
-                }
-            }
-        }
-
-        public string ColourKeyString
-        {
-            get
-            {
-                return _colourKeyString.Value;
-                if (_colourKeyString.IsValueCreated || IsFullyDecoloured)
-                {
-                    return _colourKeyString.Value;
-                }
-                else
-                {
-                    throw new Exception("No ColourKeyString");
                 }
             }
         }

@@ -15,10 +15,7 @@ namespace GameboyColourDecolouriser
         public Colour GBCDark => _GBCDark;
         public Colour GBCBlack => _GBCBlack;
 
-        public ColourTranslator()
-        {
-
-        }
+        public ColourTranslator() { }
 
         public ColourTranslator(Dictionary<Colour, Colour> dictionary)
         {
@@ -133,6 +130,11 @@ namespace GameboyColourDecolouriser
 
         public bool Equals(ColourTranslator? other)
         {
+            if (other == null)
+            {
+                return false;
+            }
+
             if (GBCWhite != other.GBCWhite)
             {
                 return false;

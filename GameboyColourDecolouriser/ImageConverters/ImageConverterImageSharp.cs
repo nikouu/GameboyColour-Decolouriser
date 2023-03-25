@@ -11,28 +11,17 @@ namespace GameboyColourDecolouriser.ImageConverters
         public static GbcImage ToGbcImage(string imagePath, ProgressTask? progressTask = null)
         {
             using var image = Image.Load<Rgba32>(imagePath);
-
-            ValidateImage(image);
-            var tiles = new Tile[image.Width / 8, image.Height / 8];
-
-            for (int i = 0; i < image.Width; i += 8)
-            {
-                for (int j = 0; j < image.Height; j += 8)
-                {
-                    var clone = image.Clone(c => c.Crop(new Rectangle(i, j, 8, 8)));
-                    var colourMap = GetColourMap(clone);
-                    tiles[i / 8, j / 8] = new Tile(colourMap, i / 8, j / 8);
-                }
-                progressTask?.Increment((double)8 / image.Width * 100);
-            }
-
-            return new GbcImage(image.Width, image.Height, tiles);
+            return ToGbcImage(image, progressTask);
         }
 
         public static GbcImage ToGbcImage(byte[] imageBytes, ProgressTask? progressTask = null)
         {
             using var image = Image.Load<Rgba32>(imageBytes);
+            return ToGbcImage(image, progressTask);
+        }
 
+        private static GbcImage ToGbcImage(Image<Rgba32> image, ProgressTask? progressTask = null)
+        {
             ValidateImage(image);
             var tiles = new Tile[image.Width / 8, image.Height / 8];
 
@@ -108,7 +97,6 @@ namespace GameboyColourDecolouriser.ImageConverters
 
             return colourMap;
         }
-
 
         private static void ValidateImage(Image image)
         {
