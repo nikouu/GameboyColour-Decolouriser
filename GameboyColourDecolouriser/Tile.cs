@@ -3,6 +3,9 @@ using System.Text;
 
 namespace GameboyColourDecolouriser
 {
+    /// <summary>
+    /// Represents a tile.
+    /// </summary>
     public class Tile : ITile
     {
         private readonly Colour[,] _colourMap;
@@ -11,12 +14,27 @@ namespace GameboyColourDecolouriser
         private readonly int _x;
         private readonly int _y;
 
+        /// <inheritdoc/>
         public int ColourHash => _hash.Value;
+
+        /// <inheritdoc/>
         public HashSet<Colour> Colours => _colours;
+
+        /// <inheritdoc/>
         public int X => _x;
+
+        /// <inheritdoc/>
         public int Y => _y;
+
+        /// <inheritdoc/>
         public Colour[,] ColourMap => _colourMap;
 
+        /// <summary>
+        ///  Initializes a new instance of the <see cref="Tile"/> class.
+        /// </summary>
+        /// <param name="colourMap">The <see cref="Colour[,]"/> representing the pixel colours for the <see cref="Tile"/>.</param>
+        /// <param name="x">The x coordinate of the tile on the greater image.</param>
+        /// <param name="y">The y coordinate of the tile on the greater image.</param>
         public Tile(Colour[,] colourMap, int x, int y)
         {
             _colourMap = colourMap;
@@ -31,6 +49,7 @@ namespace GameboyColourDecolouriser
             }
         }
 
+        /// <inheritdoc/>
         public Colour this[int x, int y]
         {
             get => _colourMap[x, y];

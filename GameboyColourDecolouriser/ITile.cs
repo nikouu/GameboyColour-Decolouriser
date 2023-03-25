@@ -16,7 +16,7 @@ namespace GameboyColourDecolouriser
 
         // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/indexers/indexers-in-interfaces
         /// <summary>
-        /// Gets or sets a <seealso cref="Colour"/> pixel associated with a specific x and y coordinate in the <seealso cref="DecolouredTile"/>.
+        /// Gets or sets a <seealso cref="Colour"/> pixel associated with a specific x and y coordinate in the <seealso cref="ITile"/>.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
