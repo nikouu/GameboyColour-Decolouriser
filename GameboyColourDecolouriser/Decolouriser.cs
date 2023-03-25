@@ -1,7 +1,4 @@
 ﻿using GameboyColourDecolouriser.Models;
-using Spectre.Console;
-using System.Collections.Generic;
-using System.Net.Security;
 
 namespace GameboyColourDecolouriser
 {
@@ -9,46 +6,41 @@ namespace GameboyColourDecolouriser
     {
         private SpectreTasks? _spectreTasks;
 
-        // could return two things:
-        // the gb image
-        // and a palette map on info on how to colour the gbimage
-        // like it has a list of palettes, with IDs based on the minimal set of palettes you could have per image
-        // then it has an array of each tile and what palette is used ot colour it
         public GbImage Decolourise(GbcImage gbcImage, SpectreTasks? spectreTasks = null)
         {
             _spectreTasks = spectreTasks;
-            var recolouredImage = new RecolouredImage(gbcImage);            
+            var decolouredImage = new DeolouredImage(gbcImage);
 
-            var recolouredTiles = Process(recolouredImage);
+            var decolouredTiles = Process(decolouredImage);
 
             // todo: redo this when properly moved to new gb model
-            var gbImage = new GbImage(gbcImage.Width, gbcImage.Height, recolouredTiles);
+            var gbImage = new GbImage(gbcImage.Width, gbcImage.Height, decolouredTiles);
 
             return gbImage;
         }
 
-        private DecolouredTile[,] Process(RecolouredImage recolouredImage)
+        private DecolouredTile[,] Process(DeolouredImage decolouredImage)
         {
-            RecolourBasedOnFourColourTiles(recolouredImage);
-            var mostUsedGbColoursPerRealColourDictionary = GetWeightedGbColoursByTrueColours(recolouredImage);
+            DecolourBasedOnFourColourTiles(decolouredImage);
+            var mostUsedGbColoursPerRealColourDictionary = GetWeightedGbColoursByTrueColours(decolouredImage);
 
             // relying on Deferred Execution, useful for chained together multiple queries that result in different manipulations of the dataset.
-            var unfinishedTiles = recolouredImage.Tiles.ToIEnumerable().Where(x => !x.IsFullyRecoloured);
+            var unfinishedTiles = decolouredImage.Tiles.ToIEnumerable().Where(x => !x.IsFullyDecoloured);
 
-            RecolourBasedOnTransparentTiles(unfinishedTiles);
-            RecolourBasedOnExistingTileColours(mostUsedGbColoursPerRealColourDictionary, unfinishedTiles);
-            RecolourBasedOnNearestSimilarColours(recolouredImage, unfinishedTiles);
+            DecolourBasedOnTransparentTiles(unfinishedTiles);
+            DecolourBasedOnExistingTileColours(mostUsedGbColoursPerRealColourDictionary, unfinishedTiles);
+            DecolourBasedOnNearestSimilarColours(decolouredImage, unfinishedTiles);
 
-            return recolouredImage.Tiles;
+            return decolouredImage.Tiles;
         }
 
-        private static Dictionary<Colour, Colour> GetWeightedGbColoursByTrueColours(RecolouredImage recolouredImage)
+        private static Dictionary<Colour, Colour> GetWeightedGbColoursByTrueColours(DeolouredImage decolouredImage)
         {
-            // recolouredImage is the work so far. which at the moment is just all the 4 colour tiles
+            // decolouredImage is the work so far. which at the moment is just all the 4 colour tiles
             // the result will be each GBC colour and its most popular GB colour it has been mapped to
 
             // this gives every key (GBC) to converted value (GB)
-            var step1 = recolouredImage.TileColourDictionary.SelectMany(x => x.Value);
+            var step1 = decolouredImage.TileColourDictionary.SelectMany(x => x.Value);
 
             // then order the all these key value pairs by brightness of the GBC colour (which i forgot why brightness was so key to this project lol)
             var step2 = step1.OrderByDescending(x => x.Key.GetBrightness());
@@ -59,32 +51,25 @@ namespace GameboyColourDecolouriser
             // gets the most common GB colour value out per GBC colour
             var step4 = step3.ToDictionary(k => k.Key, v => v.GroupBy(x => x.Value).OrderByDescending(x => x.Count()).First().First().Value);
 
-
-            var g = recolouredImage.TileColourDictionary
-                .SelectMany(x => x.Value)
-                .OrderByDescending(x => x.Key.GetBrightness())
-                .GroupBy(x => x.Key);
-                //.ToDictionary(x => x.Key, y => y.GroupBy(x => x.Value).OrderByDescending(x => x.Key).First().First().Value);
-
             return step4;
         }
 
-        private void RecolourBasedOnNearestSimilarColours(RecolouredImage recolouredImage, IEnumerable<DecolouredTile> unfinishedTiles)
+        private void DecolourBasedOnNearestSimilarColours(DeolouredImage decolouredImage, IEnumerable<DecolouredTile> unfinishedTiles)
         {
             foreach (var unfinishedTile in unfinishedTiles)
             {
-                if (recolouredImage.ContainsTile(unfinishedTile.OriginalTileHash))
+                if (decolouredImage.ContainsTile(unfinishedTile.OriginalTileHash))
                 {
-                    var colourDictionaryKey = recolouredImage.TileDictionary[unfinishedTile.OriginalTileHash];
-                    ProcessFromExistingTileDictionary(unfinishedTile, recolouredImage.TileColourDictionary[colourDictionaryKey]);
+                    var colourDictionaryKey = decolouredImage.TileDictionary[unfinishedTile.OriginalTileHash];
+                    ProcessFromExistingTileDictionary(unfinishedTile, decolouredImage.TileColourDictionary[colourDictionaryKey]);
                 }
-                else if (recolouredImage.ContainsColour(unfinishedTile.ColourKeyString))
+                else if (decolouredImage.ContainsColour(unfinishedTile.ColourKeyString))
                 {
-                    ProcessFromExistingTileDictionary(unfinishedTile, recolouredImage.TileColourDictionary[unfinishedTile.ColourKeyString]);
+                    ProcessFromExistingTileDictionary(unfinishedTile, decolouredImage.TileColourDictionary[unfinishedTile.ColourKeyString]);
                 }
                 else
                 {
-                    ProcessBasedOnBestNearestEstimate(recolouredImage, unfinishedTiles, unfinishedTile);
+                    ProcessBasedOnBestNearestEstimate(decolouredImage, unfinishedTiles, unfinishedTile);
                 }
 
                 _spectreTasks?.decolourStageFour.Increment(((double)1 / unfinishedTiles.Count()) * 100);
@@ -92,21 +77,21 @@ namespace GameboyColourDecolouriser
         }
 
         // Goes through each pixel in a tile to make the best guess on what that pixel could be
-        private void ProcessBasedOnBestNearestEstimate(RecolouredImage recolouredImage, IEnumerable<DecolouredTile> unfinishedTiles, DecolouredTile unfinishedTile)
+        private void ProcessBasedOnBestNearestEstimate(DeolouredImage decolouredImage, IEnumerable<DecolouredTile> unfinishedTiles, DecolouredTile unfinishedTile)
         {
             // remember, colour here is what is on the /unfinished/ tile we are creating with GB colours, so it will have missing colours at first
             foreach (var ((i, j), colour) in unfinishedTile.ToIEnumerable())
             {
                 var currentOriginalColour = unfinishedTile.OriginalTileColourMap[i, j];
 
-                if (colour.IsDefault && (unfinishedTile.IsFullyRecoloured || unfinishedTile.IsColourTranslated(currentOriginalColour)))
+                if (colour.IsDefault && (unfinishedTile.IsFullyDecoloured || unfinishedTile.IsColourTranslated(currentOriginalColour)))
                 {
                     // the colour has been found in a previous loop, and now its time to apply that colour to the remaining pixels
                     unfinishedTile[i, j] = unfinishedTile.GetGBColour(unfinishedTile.OriginalTileColourMap[i, j]);
                 }
-                else if (colour.IsDefault && !unfinishedTile.IsFullyRecoloured)
+                else if (colour.IsDefault && !unfinishedTile.IsFullyDecoloured)
                 {
-                    var remainingColourOptions = new List<Colour> { Colour.GBWhite, Colour.GBLight, Colour.GBDark, Colour.GBBlack }.Except(unfinishedTile.Colours).ToDictionary(x => x.GetBrightness(), z => z);
+                    var remainingColourOptions = Colour.GbColourList.Except(unfinishedTile.Colours).ToDictionary(x => x.GetBrightness(), z => z);
 
                     var currentOriginalColourBrightness = currentOriginalColour.GetBrightness();
 
@@ -122,10 +107,10 @@ namespace GameboyColourDecolouriser
                     continue;
                 }
             }
-            UpdateImageDictionaryCaches(recolouredImage, unfinishedTile);
+            UpdateImageDictionaryCaches(decolouredImage, unfinishedTile);
         }
 
-        private void RecolourBasedOnExistingTileColours(Dictionary<Colour, Colour> mostUsedGbColoursPerRealColourDictionary, IEnumerable<DecolouredTile> unfinishedTiles)
+        private void DecolourBasedOnExistingTileColours(Dictionary<Colour, Colour> mostUsedGbColoursPerRealColourDictionary, IEnumerable<DecolouredTile> unfinishedTiles)
         {
             foreach (var unfinishedTile in unfinishedTiles)
             {
@@ -143,7 +128,7 @@ namespace GameboyColourDecolouriser
             }
         }
 
-        private void RecolourBasedOnTransparentTiles(IEnumerable<DecolouredTile> unfinishedTiles)
+        private void DecolourBasedOnTransparentTiles(IEnumerable<DecolouredTile> unfinishedTiles)
         {
             foreach (var unfinishedTile in unfinishedTiles)
             {
@@ -167,9 +152,9 @@ namespace GameboyColourDecolouriser
             }
         }
 
-        private void RecolourBasedOnFourColourTiles(RecolouredImage recolouredImage)
+        private void DecolourBasedOnFourColourTiles(DeolouredImage decolouredImage)
         {
-            var tiles = recolouredImage.Tiles.ToIEnumerable().OrderByDescending(x => x.GBCColourCount).ToList();
+            var tiles = decolouredImage.Tiles.ToIEnumerable().OrderByDescending(x => x.GBCColourCount).ToList();
 
             if (!tiles.Any(x => x.GBCColours.Count == 4))
             {
@@ -183,33 +168,33 @@ namespace GameboyColourDecolouriser
             {
                 foreach (var tile in tileGroup)
                 {
-                    if (recolouredImage.ContainsTile(tile.OriginalTileHash))
+                    if (decolouredImage.ContainsTile(tile.OriginalTileHash))
                     {
-                        var colourDictionaryKey = recolouredImage.TileDictionary[tile.OriginalTileHash];
-                        ProcessFromExistingTileDictionary(tile, recolouredImage.TileColourDictionary[colourDictionaryKey]);
+                        var colourDictionaryKey = decolouredImage.TileDictionary[tile.OriginalTileHash];
+                        ProcessFromExistingTileDictionary(tile, decolouredImage.TileColourDictionary[colourDictionaryKey]);
                     }
-                    else if (recolouredImage.ContainsColour(tile.ColourKeyString))
+                    else if (decolouredImage.ContainsColour(tile.ColourKeyString))
                     {
-                        ProcessFromExistingTileDictionary(tile, recolouredImage.TileColourDictionary[tile.ColourKeyString]);
+                        ProcessFromExistingTileDictionary(tile, decolouredImage.TileColourDictionary[tile.ColourKeyString]);
                     }
                     else if (tile.GBCColourCount == 4)
                     {
                         ProcessFourColours(tile);
-                        UpdateImageDictionaryCaches(recolouredImage, tile);
+                        UpdateImageDictionaryCaches(decolouredImage, tile);
                     }
                     else
                     {
                         if (tileGroups.Any(x => x.Key == tileGroup.Key + 1))
                         {
                             ProcessFromSimilarMoreColouredTiles(tile, tileGroups.Where(x => x.Key == tileGroup.Key + 1).First());
-                        }                        
+                        }
 
                         if (tile.Colours.Count == 0)
                         {
                             continue;
                         }
 
-                        UpdateImageDictionaryCaches(recolouredImage, tile);
+                        UpdateImageDictionaryCaches(decolouredImage, tile);
                     }
                 }
                 _spectreTasks?.decolourStageOne.Increment(((double)1 / tileGroups.Count) * 100);
@@ -217,38 +202,38 @@ namespace GameboyColourDecolouriser
         }
 
         // does this function actually do anything with all the variables bewfore the tryadds?
-        private void UpdateImageDictionaryCaches(RecolouredImage recolouredImage, DecolouredTile tile)
+        private void UpdateImageDictionaryCaches(DeolouredImage decolouredImage, DecolouredTile tile)
         {
             // for this translated dictionary, we have a unique key, and the mappings for GBC to GB colours associated with it
-            recolouredImage.TileColourDictionary.TryAdd(tile.ColourKeyString, tile.GetTranslatedDictionary);
+            decolouredImage.TileColourDictionary.TryAdd(tile.ColourKeyString, tile.GetTranslatedDictionary);
 
             // then for this tile, we can associate a key with it so if there are identical tiles, we know which translation to use
-            recolouredImage.TileDictionary.TryAdd(tile.OriginalTileHash, tile.ColourKeyString);
+            decolouredImage.TileDictionary.TryAdd(tile.OriginalTileHash, tile.ColourKeyString);
         }
 
         // we have seen the identical tile before, so we know how to process it
-        private void ProcessFromExistingTileDictionary(DecolouredTile recolouredTile, Dictionary<Colour, Colour> dictionary)
+        private void ProcessFromExistingTileDictionary(DecolouredTile decolouredTile, Dictionary<Colour, Colour> dictionary)
         {
-            foreach (var ((i, j), colour) in recolouredTile.ToIEnumerable())
+            foreach (var ((i, j), colour) in decolouredTile.ToIEnumerable())
             {
-                var originalColour = recolouredTile.OriginalTileColourMap[i, j];
-                recolouredTile[i, j] = dictionary[originalColour];
+                var originalColour = decolouredTile.OriginalTileColourMap[i, j];
+                decolouredTile[i, j] = dictionary[originalColour];
             }
         }
 
-        private void ProcessFromSimilarMoreColouredTiles(DecolouredTile recolouredTile, IEnumerable<DecolouredTile> tiles)
+        private void ProcessFromSimilarMoreColouredTiles(DecolouredTile decolouredTile, IEnumerable<DecolouredTile> tiles)
         {
-            // go through the recolouredImage object to find something that has the same colours.      
+            // go through the decolouredImage object to find something that has the same colours.      
 
             foreach (var tile in tiles)
             {
-                if (tile.GBCColourCount == tile.Colours.Count && tile.GBCColours.ContainsAll(recolouredTile.GBCColours))
+                if (tile.GBCColourCount == tile.Colours.Count && tile.GBCColours.ContainsAll(decolouredTile.GBCColours))
                 {
                     // found an n+1 colour tile that has all the n colours of this
-                    foreach (var ((i, j), colour) in recolouredTile.ToIEnumerable())
+                    foreach (var ((i, j), colour) in decolouredTile.ToIEnumerable())
                     {
-                        var originalColour = recolouredTile.OriginalTileColourMap[i, j];
-                        recolouredTile[i, j] = tile.GetGBColour(originalColour);
+                        var originalColour = decolouredTile.OriginalTileColourMap[i, j];
+                        decolouredTile[i, j] = tile.GetGBColour(originalColour);
                     }
 
                     return;
@@ -256,17 +241,16 @@ namespace GameboyColourDecolouriser
             }
         }
 
-        private void ProcessFourColours(DecolouredTile recolouredTile)
+        private void ProcessFourColours(DecolouredTile decolouredTile)
         {
-            var possibleGBColours = new List<Colour> { Colour.GBWhite, Colour.GBLight, Colour.GBDark, Colour.GBBlack };
-            var lightestToDarkestColours = recolouredTile.GBCColours.OrderByDescending(x => x.GetBrightness()).ToList();
+            var lightestToDarkestColours = decolouredTile.GBCColours.OrderByDescending(x => x.GetBrightness()).ToList();
 
-            var localColourMap = lightestToDarkestColours.Zip(possibleGBColours, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
+            var localColourMap = lightestToDarkestColours.Zip(Colour.GbColourList, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
 
-            // recolour each pixel of the decoloured tile as we have mapped the GBC to the GB colours based on brightness
-            foreach (var ((i, j), colour) in recolouredTile.ToIEnumerable())
+            // decolour each pixel of the decoloured tile as we have mapped the GBC to the GB colours based on brightness
+            foreach (var ((i, j), colour) in decolouredTile.ToIEnumerable())
             {
-                recolouredTile[i, j] = localColourMap[recolouredTile.OriginalTileColourMap[i, j]];
+                decolouredTile[i, j] = localColourMap[decolouredTile.OriginalTileColourMap[i, j]];
             }
         }
     }

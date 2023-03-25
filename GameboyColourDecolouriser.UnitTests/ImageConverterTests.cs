@@ -37,7 +37,7 @@ namespace GameboyColourDecolouriser.UnitTests
         [Fact]
         public void ToGbcImage_LoadTwoColourTile_CorrectColours()
         {
-            
+
         }
 
         [Fact]

@@ -59,8 +59,8 @@ namespace GameboyColourDecolouriser.cli.Decolourise
                     Directory.CreateDirectory(outputFile.DirectoryName);
                 }
 
-                var recolouredImageBytes = ImageConverterImageSharp.ToImageBytes(gbImage, generatingFinalImage);
-                File.WriteAllBytes(outputFile.FullName, recolouredImageBytes);                
+                var decolouredImageBytes = ImageConverterImageSharp.ToImageBytes(gbImage, generatingFinalImage);
+                File.WriteAllBytes(outputFile.FullName, decolouredImageBytes);
             });
 
             return 0;

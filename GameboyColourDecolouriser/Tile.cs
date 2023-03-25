@@ -20,7 +20,7 @@ namespace GameboyColourDecolouriser
         public Tile(Colour[,] colourMap, int x, int y)
         {
             _colourMap = colourMap;
-            _x = x; 
+            _x = x;
             _y = y;
             _colours = new HashSet<Colour>();
             _hash = new Lazy<int>(GenerateHash); // hm, this should be ensured to only be called after a load

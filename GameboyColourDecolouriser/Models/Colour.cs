@@ -3,6 +3,9 @@
 // A trimmed version of the System.Drawing Color object
 public readonly struct Colour : IEquatable<Colour>, IComparable<Colour>
 {
+    // Replace with FrozenCollection in C#8, maybe
+    internal static readonly List<Colour> _gbColourList = new() { GBWhite, GBLight, GBDark, GBBlack };
+
     public static Colour GBWhite => FromRgb(224, 248, 207);
     public static Colour GBLight => FromRgb(134, 192, 108);
     public static Colour GBDark => FromRgb(48, 104, 80);
@@ -22,6 +25,8 @@ public readonly struct Colour : IEquatable<Colour>, IComparable<Colour>
     public byte G => unchecked((byte)(value >> ARGBGreenShift));
     public byte B => unchecked((byte)(value >> ARGBBlueShift));
     public byte A => unchecked((byte)(value >> ARGBAlphaShift));
+
+    public static List<Colour> GbColourList => new(_gbColourList);
 
     internal Colour(long value, bool isDefault)
     {

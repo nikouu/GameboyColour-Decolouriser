@@ -253,7 +253,7 @@ namespace GameboyColourDecolouriser.UnitTests
             Assert.Equal(Colour.FromRgb(48, 104, 80), colourMap[0, 5]);
             Assert.Equal(Colour.FromRgb(224, 248, 207), colourMap[0, 6]);
             Assert.Equal(Colour.FromRgb(134, 192, 108), colourMap[0, 7]);
-           
+
             Assert.Equal(Colour.FromRgb(134, 192, 108), colourMap[1, 0]);
             Assert.Equal(Colour.FromRgb(48, 104, 80), colourMap[1, 1]);
             Assert.Equal(Colour.FromRgb(224, 248, 207), colourMap[1, 2]);
@@ -262,7 +262,7 @@ namespace GameboyColourDecolouriser.UnitTests
             Assert.Equal(Colour.FromRgb(224, 248, 207), colourMap[1, 5]);
             Assert.Equal(Colour.FromRgb(134, 192, 108), colourMap[1, 6]);
             Assert.Equal(Colour.FromRgb(48, 104, 80), colourMap[1, 7]);
-            
+
             Assert.Equal(Colour.FromRgb(48, 104, 80), colourMap[2, 0]);
             Assert.Equal(Colour.FromRgb(224, 248, 207), colourMap[2, 1]);
             Assert.Equal(Colour.FromRgb(134, 192, 108), colourMap[2, 2]);
@@ -443,6 +443,6 @@ namespace GameboyColourDecolouriser.UnitTests
 
             // Assert
             Assert.Null(exception);
-        }        
+        }
     }
 }

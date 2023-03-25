@@ -1,5 +1,4 @@
 ﻿using GameboyColourDecolouriser.Models;
-using SixLabors.ImageSharp;
 using System.Text;
 
 namespace GameboyColourDecolouriser
@@ -12,7 +11,7 @@ namespace GameboyColourDecolouriser
         private Lazy<int> _gbcColourCount;
         private readonly Lazy<int> _originalTileHash;
         private Lazy<string> _colourKeyString;
-        private bool _isFullyRecoloured = false;
+        private bool _isFullyDecoloured = false;
         private Lazy<HashSet<Colour>> _gbcColours;
         private Lazy<HashSet<Colour>> _colours;
 
@@ -31,17 +30,17 @@ namespace GameboyColourDecolouriser
         public int X => _gbcTile.X;
         public int Y => _gbcTile.Y;
         public int OriginalTileHash => _originalTileHash.Value;
-        public bool IsFullyRecoloured
+        public bool IsFullyDecoloured
         {
             get
             {
-                if (_isFullyRecoloured)
+                if (_isFullyDecoloured)
                 {
-                    return _isFullyRecoloured;
+                    return _isFullyDecoloured;
                 }
                 else if (GBCColourCount == Colours.Count)
                 {
-                    _isFullyRecoloured = true;
+                    _isFullyDecoloured = true;
                     return true;
                 }
                 else
@@ -86,7 +85,7 @@ namespace GameboyColourDecolouriser
             get
             {
                 return _colourKeyString.Value;
-                if (_colourKeyString.IsValueCreated || IsFullyRecoloured)
+                if (_colourKeyString.IsValueCreated || IsFullyDecoloured)
                 {
                     return _colourKeyString.Value;
                 }

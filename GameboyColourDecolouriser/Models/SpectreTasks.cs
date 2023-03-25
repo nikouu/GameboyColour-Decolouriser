@@ -1,4 +1,5 @@
 ﻿using Spectre.Console;
+
 namespace GameboyColourDecolouriser.Models;
 
 public record class SpectreTasks(
