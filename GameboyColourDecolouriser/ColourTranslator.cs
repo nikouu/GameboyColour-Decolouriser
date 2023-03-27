@@ -25,6 +25,7 @@ namespace GameboyColourDecolouriser
             }
         }
 
+
         public void UpdateTranslation(Colour gbcColour, Colour gbColour)
         {
             if (gbColour == Colour.GBWhite)
@@ -168,8 +169,14 @@ namespace GameboyColourDecolouriser
             return new HashSet<Colour>(_dictionary.Values);
         }
 
-        public override bool Equals(object obj)
+        /// <inheritdoc/>
+        public override bool Equals(object? obj)
         {
+            if (obj == null)
+            {
+                return false;
+            }
+
             return Equals(obj as ColourTranslator);
         }
 

@@ -8,12 +8,24 @@ namespace GameboyColourDecolouriser.ImageConverters
 {
     public static class ImageConverterImageSharp
     {
+        /// <summary>
+        /// Converts an image into a <see cref="GbcImage"/>.
+        /// </summary>
+        /// <param name="imagePath">The path to the image.</param>
+        /// <param name="progressTask"></param>
+        /// <returns>A <see cref="GbcImage"/> of the given image.</returns>
         public static GbcImage ToGbcImage(string imagePath, ProgressTask? progressTask = null)
         {
             using var image = Image.Load<Rgba32>(imagePath);
             return ToGbcImage(image, progressTask);
         }
 
+        /// <summary>
+        /// Converts an image into a <see cref="GbcImage"/>.
+        /// </summary>
+        /// <param name="imageBytes">The <see cref="byte[]"/> of the image.</param>
+        /// <param name="progressTask"></param>
+        /// <returns>A <see cref="GbcImage"/> of the given image.</returns>
         public static GbcImage ToGbcImage(byte[] imageBytes, ProgressTask? progressTask = null)
         {
             using var image = Image.Load<Rgba32>(imageBytes);
