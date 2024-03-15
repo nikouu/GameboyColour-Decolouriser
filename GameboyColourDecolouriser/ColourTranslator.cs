@@ -25,7 +25,6 @@ namespace GameboyColourDecolouriser
             }
         }
 
-
         public void UpdateTranslation(Colour gbcColour, Colour gbColour)
         {
             if (gbColour == Colour.GBWhite)
