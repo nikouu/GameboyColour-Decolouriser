@@ -4,11 +4,12 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+    <DebugType>embedded</DebugType>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<Title>GameboyColourDecolouriser</Title>
+    <Title>GameboyColourDecolouriser</Title>
 		<AssemblyVersion>1.0.1.0</AssemblyVersion>
 		<FileVersion>1.0.1.0</FileVersion>
-		<Version>1.0.3</Version>
+		<Version>0.1.1</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Mode)' == 'Self-Contained'">

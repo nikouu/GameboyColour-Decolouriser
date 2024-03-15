@@ -39,11 +39,13 @@ If you want to build and run yourself either:
 
 ### Publishing
 
-`dotnet publish -c Release -r win-x64`
+`dotnet publish GameboyColourDecolouriser.Cli -c Release -r win-x64 -p:PublishSingleFile=true -p:TargetName=GameboyColourDecolouriser --self-contained false`
 
-`dotnet publish -c Release -r osx-x64`
+`dotnet publish GameboyColourDecolouriser.Cli -c Release -r osx-x64 -p:PublishSingleFile=true -p:TargetName=GameboyColourDecolouriser --self-contained false`
 
-`dotnet publish -c Release -r linux-x64`
+`dotnet publish GameboyColourDecolouriser.Cli -c Release -r linux-x64 -p:PublishSingleFile=true -p:TargetName=GameboyColourDecolouriser --self-contained false`
+
+Note: the executable will be called `GameboyColourDecolouriser.Cli`.
 
 [RID reference](https://docs.microsoft.com/en-gb/dotnet/core/rid-catalog)
 
