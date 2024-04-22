@@ -8,7 +8,7 @@
     <description>Package Description</description>
     <dependencies>
       <group targetFramework="net7.0">
-        <dependency id="SixLabors.ImageSharp" version="2.1.7" exclude="Build,Analyzers" />
+        <dependency id="SixLabors.ImageSharp" version="2.1.8" exclude="Build,Analyzers" />
         <dependency id="Spectre.Console" version="0.44.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
