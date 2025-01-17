@@ -3,6 +3,8 @@
 
 ✨Decolourises a Gameboy Color image into a GameBoy image✨ via looking at each tile and mapping the colour values to one of the 4 on a Gameboy.
 
+Want to try this in the browser **right now?** Check out my other project: [Gameboy Color Reducer](https://github.com/nikouu/GameboyColorReducer)
+
 ![image](etc/gbctogb.jpeg)
 
 ![image](etc/mokkiarea-eachpass.gif)
